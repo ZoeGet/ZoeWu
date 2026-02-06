@@ -90,6 +90,48 @@
     
     <entry>
       
+        <title>nmcli 网络管理</title>
+      
+      <link href="/ZoeWu//posts/2021/12/20/163227.html"/>
+      <url>/ZoeWu//posts/2021/12/20/163227.html</url>
+      
+        <content type="html"><![CDATA[<p>在RHEL 8中主机网络接口配置文件保存在**&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts**目录中。</p><p>手动方式配置网络时，需要配置的参数有：IP地址、子网掩码、网关、DNS地址及启用连接。</p><p><strong>nmcli</strong> <strong>命令配置网络</strong></p><ol><li>列出当前主机所有可用的网络连接：<strong>nmcli connection show</strong></li></ol><p>[root@localhost ~]# nmcli connection show</p><ol start="2"><li>删除连接：<strong>nmcli connection delete 连接名称</strong></li></ol><p>[root@localhost ~]# nmcli connection delete ens160</p><ol start="3"><li>添加网络连接：<strong>nmcli connection add</strong></li></ol><p> # con-name 连接名称 ifname 设备名称 type 类型 ethernet 以太网</p><p>[root@localhost ~]# nmcli connection add con-name ens160 ifname ens160 type ethernet</p><ol start="4"><li>修改网络连接：nmcli connection modify 连接名称</li></ol><p>（前提是NAME连接已经存在）</p><p>例：</p><p>IP：172.16.30.130&#x2F;24 网关：172.16.30.1 DNS：202.103.24.68 启用连接</p><p>[root@localhost ~]# nmcli connection modify ens160 ipv4.addresses 172.16.30.130&#x2F;24 ipv4.gateway 172.16.30.1 ipv4.dns 202.103.24.68 ipv4.method manual connection.autoconnect yes</p><p># method：配置方式   manual：手动   connection.autoconnect：自动连接</p><ol start="5"><li>激活连接：<strong>nmcli connection up 连接名称</strong></li></ol><p>[root@localhost ~]# nmcli connection up ens160</p><ol start="6"><li>添加并配置网络连接：</li></ol><p>[root@localhost ~]# nmcli connection add con-name ens160 ifname ens160 type ethernet ipv4.addresses 172.16.30.130&#x2F;24 ipv4.gateway 172.16.30.1 ipv4.dns 202.103.24.68 ipv4.method manual connection.autoconnect yes</p><p><strong>修改配置文件配置网络</strong></p><ol><li>查看ens160配置文件</li></ol><p>[root@localhost ~]# cd &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;</p><p>[root@localhost network-scripts]# ls</p><p>ifcfg-ens160</p><p>[root@localhost network-scripts]# vim ifcfg-ens160 </p><p>修改如下配置：</p><p>BOOTPROTO&#x3D;none   启动地址协议：none 手动 &#x2F; dhcp 自动</p><p>ONBOOT&#x3D;yes   是否连接 （激活）</p><p>IPADDR&#x3D;172.16.30.130   IP地址</p><p>NETMASK&#x3D;255.255.255.0或PREFIX&#x3D;24   子网掩码</p><p>GATEWAY&#x3D;172.16.30.1   默认网关</p><p>DNS1&#x3D;202.103.24.68   dns地址</p><ol start="2"><li>重新加载配置文件</li></ol><p>[root@localhost network-scripts]# systemctl restart NetworkManager或nmcli connection reload ens160</p><ol start="3"><li>激活ens160连接</li></ol><p>[root@localhost network-scripts]# nmcli connection up ens160</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>rpm 应用程序的安装与管理</title>
+      
+      <link href="/ZoeWu//posts/2021/12/17/123521.html"/>
+      <url>/ZoeWu//posts/2021/12/17/123521.html</url>
+      
+        <content type="html"><![CDATA[<p>安装完一个软件包以后，应用程序可能会向系统复制大量的数据文件，并进行相关设置。在Linux系统中，典型的应用 程序通常由以下<strong>6****个部分组成</strong>。 </p><p>普通的可执行程序文件：一般保存 在&#x2F;usr&#x2F;bin目录中，普通用户即可执行。 </p><p>服务器程序、管理程序文件：一般 保存在&#x2F;usr&#x2F;sbin目录中，只有管理员能执行。 </p><p>配置文件：一般保存在&#x2F;etc目录 中，配置文件较多时会建立相应的子目录。 </p><p>日志文件：一般保存在&#x2F;var&#x2F;log目录中。 </p><p>关于应用程序的参考文档等数据： 一般保存在&#x2F;usr&#x2F;share&#x2F;doc&#x2F;目录中。 </p><p>执行文件及配置文件的man手册 页：一般保存在&#x2F;usr&#x2F;share&#x2F;man&#x2F;目录中。 </p><p>RPM 二进制包的命名需遵守统一的命名规则，用户通过名称就可以直接获取这类包的版本、适用平台等信息。</p><p>RPM 二进制包命名的一般格式如下：</p><p><strong>包名-版本号-发布次数-发行商-Linux平台适合的硬件平台-包扩展名</strong> </p><p>例如，RPM 包的名称是 httpd-2.2.15-15.el6.centos.1.i686.rpm，其中：</p><p>httpd：软件包名。这里需要注意， httped 是包名，而httpd-2.2.15-15.el6.centos.1.i686.rpm 通常称为包全名，包名和包全名是不同的 </p><p>在某些 Linux 命令中，有些命令（如包的安装和升级）使用的是包全名，而有些命令（包的查询和卸载）使用的是包名，一不小心就会弄错。 </p><p>2.2.15：包的版本号，版本号的格式通 常为主版本号.次版本号.修正号。 </p><p>15：二进制包发布的次数，表示此 RPM 包是第几次编程生成的。 </p><p>el*：软件发行商，el6 表示此包是由 Red Hat 公司发布，适合在 RHEL 6.x (Red Hat Enterprise Unux) 和 CentOS 6.x 上使 用。 </p><p>centos：表示此包适用于 CentOS 系 统。 </p><p>i686：表示此包使用的硬件平台，目前 的 RPM 包支持的平台如表 1 所示：</p><p>x86_64  64 位 CPU 可以安装 </p><p>noarch  没有硬件限制 </p><p><strong>使用</strong> <strong>rpm</strong> <strong>做查询命令</strong></p><p>格式如下： </p><p>[root@localhost ~]# rpm 选项 查询对象 </p><p><strong>rpm -q</strong>：查询软件包是否安装 </p><p>用 rpm 查询软件包是否安装的命令格式为：</p><p>[root@localhost ~]# rpm -q 包名  -q 表示查询，是 query 的首字母。 </p><p>[root@localhost Packages]# rpm -q vim-minimal </p><p>vim-minimal-8.0.1763-13.el8.x86_64 </p><p>查询已安装的RPM软件包信息</p><p>不带子选项的“-q”选项可用于查询已 知名称的软件包是否已经安装，需要使用准确的软件名作为参数（可以有多个），结合不同的子选项使用时可以进行更具体的查询。<strong>常用的</strong> <strong>4</strong> <strong>个子选项</strong></p><p>如下所述： </p><p><strong>-qa</strong>：显示当前系统中以<strong>RPM</strong>方式安装的所有软件列表。 </p><p>1、什么都不带，表示列出所有 以RPM方式安装的所有软件列表 </p><p>2、[root@localhost Packages]# rpm -qa | grep vsftpd </p><p><strong>-qi</strong>：查看指定软件包的名称、<strong>版本</strong>、许可协议及用途描述等详细信息** （–info）。 </p><p>[root@localhost Packages]# rpm -qi vim-minimal </p><p>Name : vim-minimal </p><p>Version : 3.0.3 </p><p>Release : 28.el8 </p><p>Architecture: x86_64 </p><p>Install Date: 2021年10月3日 星期日 14时18分53秒</p><p><strong>-ql</strong>：显示指定的软件包在当前系 <strong>统中安装的所有目录、文件列表</strong>（– list）。</p><p><strong>-qf</strong>：查看指定的文件或目录是由 <strong>哪个软件包所安装的</strong>（–file）。 </p><p>[root@localhost Packages]# rpm -qf &#x2F;etc&#x2F;passwd </p><p>setup-2.12.2-2.el8.noarch</p><p><strong>查询未安装的</strong> <strong>RPM</strong> <strong>软件包信息</strong> </p><p>注意，这里用的是<strong>包全名</strong>，且未安装的软件包需使用“<strong>绝对路径+包全名</strong>”的方式才能确定包。使用“-qp”选项时，必须以RPM软件包文件的路径作为参数（可以有多个），而不是软件包名称。其相关的子选项与使用“-q”查询时类似，常用的两个查询选项如下所述：</p><p><strong>-qpi</strong>：查看指定软件包的名称、版本、许可协议和用途描述等详细信息。</p><p>[root@localhost Packages]# rpm -qip vsftpd-3.0.3-28.el8.x86_64.rpm （包全名）</p><p><strong>-qpl</strong>：查看该软件包准备要安装的所有目标目录和文件列表。 </p><p>[root@localhost Packages]# rpm -qpl vsftpd-3.0.3-28.el8.x86_64.rpm （包全名） </p><p><strong>安装、升级、卸载</strong> <strong>RPM</strong> <strong>软件包</strong> </p><p>在日常系统管理工作中，安装、升级及卸载软件包是管理应用程序最基本的工作内容。使用rpm命令实现这些操作时，基本的命令选项如下所述：</p><p><strong>-i</strong>：在当前系统中安装一个<strong>新的RPM软件包</strong>。包全名 install </p><p>[root@localhost Packages]# rpm -i vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY</p><p><strong>-e</strong>：卸载指定名称的软件包。 erase </p><p>[root@localhost Packages]# rpm -e vsftpd</p><p><strong>-U</strong>：检查并升级系统中的某个软件包。若没有安装则进行安装，若已安装则进行升级 </p><p>[root@localhost Packages]# rpm - Uvh vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY Verifying… ############################## ### [100%] 准备中… ############################## ### [100%] 正在升级&#x2F;安装… 1:vsftpd-3.0.3-28.el8 ############################## ### [100%]</p><p><strong>-F</strong>：检查并更新系统中某个软件包，若该软件包原来并未安装，则放弃安装。还有几个相关的命令选项，可以用于辅助安装、卸载软件包的过程。 </p><p>[root@localhost Packages]# rpm -Fvh vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY</p><p><strong>在安装或升级系统内核时，不允许使用****Uvh</strong> <strong>或</strong> <strong>Fvh ,</strong> <strong>需使用</strong> <strong>ivh</strong> </p><p><strong>–force****：强制安装某个软件包</strong>，当需要 替换现已安装的软件包及文件，或者安装一个比当前使用的软件版本更旧的软件时，可以使用此选项。强制安装。不管是否已经安装，都重新安装</p><p>[root@localhost Packages]# rpm -ivh vsftpd-3.0.3-28.el8.x86_64.rpm – force</p><p><strong>–nodeps</strong> ：在此安装或升级、卸载一个软件包时，不检查与其他软件包的依赖关系**。</p><p><strong>-h</strong>：在安装或升级软件包的过程** <strong>中，以“</strong>*#<strong>”号显示安装进度</strong>。hash </p><p><strong>-v</strong>：显示软件安装过程中的详细信息。verbose </p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
         <title>VIM编辑器</title>
       
       <link href="/ZoeWu//posts/2021/12/16/184902.html"/>
