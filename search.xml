@@ -90,6 +90,111 @@
     
     <entry>
       
+        <title>进程优先级</title>
+      
+      <link href="/ZoeWu//posts/2022/01/05/143534.html"/>
+      <url>/ZoeWu//posts/2022/01/05/143534.html</url>
+      
+        <content type="html"><![CDATA[<p>不同进程的重要性水平各不相同，进程调度程序可以配置为针对不同的进程采用不同的调度策略。常规系统上运行的大多数进程所使用的调度策略称为<strong>SCHED_NORMAL</strong>。由于并非所有进程都同等重要，因此可为采用SCHED_NORMAL策略运行的进程指定相对优先级，此优先级称为进程的nice值。对于任何进程，都可以组织成<strong>40种</strong>不同级别的nice值。</p><p><strong>nice级别值的范围介于-20（最高优先级）到19（最低优先级）之间</strong>。默认情况下，<strong>进程将继承其父进程的nice值</strong>，通常为<strong>0</strong>。<strong>nice级别越高，表示优先级越低</strong>（该进程容易将其CPU使用量让给其他进程）；<strong>nice级别越低，表示优先级越高</strong>（该进程更加不倾向于让出CPU使用量）。如果不存在资源争用，即使nice级别高的进程也将仍使用它们可使用的所有可用CPU资源。但当请求的CPU时间（资源）的进程数超过了可用核心数时，nice级别高的进程将比nice级别低的进程收到更少的CPU时间（资源）。</p><p>普通用户（非特权用户）的权限<strong>仅限于提高自己进程的nice级别</strong>，<strong>不能设置降低自己进程的nice级别</strong>，也<strong>不能修改其他用户进程的****nice</strong> <strong>级别</strong>。但是<strong>root</strong> <strong>用户可以灵活的提高或降低进程的</strong> <strong>nice</strong> <strong>级别</strong>。</p><p>进程管理工具<strong>top</strong>默认显示nice级别、<strong>ps</strong>工具可在使用适当选项的情况下显示nice级别。</p><h1 id="通过命令行显示-nice-级别"><a href="#通过命令行显示-nice-级别" class="headerlink" title="通过命令行显示 nice 级别"></a><strong>通过命令行显示</strong> <strong>nice</strong> <strong>级别</strong></h1><p>ps命令列出所有进程的相关信息：包括PID、进程名称、nice级别、调度类，降序</p><p><strong>ps axo pid,comm,nice,cls –sort&#x3D;-nice</strong></p><p>pid：进程号   comm：进程名称    nice：nice级别</p><p>cls：调度类    –sort：排序     -nice：降序   –sort&#x3D;-nice：进行降序排列</p><h1 id="启动具有不同-NICE-级别的进程"><a href="#启动具有不同-NICE-级别的进程" class="headerlink" title="启动具有不同 NICE 级别的进程"></a><strong>启动具有不同</strong> <strong>NICE</strong> <strong>级别的进程</strong></h1><p>在进程创建的过程中，进程会继承其父进程的nice级别。从命令行启动某个进程时，该进程将从启动它的shell进程那里继承nice级别。通常，这将<strong>导致新进程以</strong> <strong>nice</strong> <strong>级别</strong> <strong>0</strong> <strong>运行</strong></p><p>sha1sum &#x2F;dev&#x2F;zero &amp;   #显示出进程PID号</p><p>ps -o pid,comm,nice 进程ID</p><p>&amp;：将进程放到后台执行  zero：演示用的空设备</p><p>调整进程启动时的NICE级别</p><p>所有用户都可以使用nice命令来启动具有默认或更高nice级别的命令。<strong>在不带选项的情况下，****nice</strong> <strong>命令将启动一个</strong> <strong>默认</strong> <strong>nice</strong> <strong>值为</strong> <strong>10</strong> <strong>的进程</strong>。</p><p>nice sha1sum &#x2F;dev&#x2F;zero &amp;</p><p>ps -o pid,comm,nice 进程ID</p><p>利用**-n**选项可以将用户定义的nice级别应用到启动的进程</p><p>[root@localhost ~]# nice -n 5 sha1sum &#x2F;dev&#x2F;zero &amp;</p><p>[3] 2311</p><p>[root@localhost ~]# ps -o pid,comm,nice 2311</p><p> PID COMMAND NI</p><p> 2311 sha1sum 5</p><h1 id="更改现有进程的-NICE-级别"><a href="#更改现有进程的-NICE-级别" class="headerlink" title="更改现有进程的 NICE 级别"></a><strong>更改现有进程的</strong> <strong>NICE</strong> <strong>级别</strong></h1><p>使用<strong>renice</strong>命令更改现有进程nice级别</p><p><strong>renice -n</strong> 19 进程ID  #新优先级为19</p><p>ps -o pid,comm,nice 进程ID</p><p>[root@localhost mnt]# renice -n -1 6222</p><p>6222 (process ID)      #旧优先级为 0，新优先级为 -1</p><p>[root@localhost ~]# ps -o pid,comm,nice 6222</p><p> PID COMMAND NI</p><p> 6222 sha1sum -1</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>系统调优</title>
+      
+      <link href="/ZoeWu//posts/2022/01/02/233006.html"/>
+      <url>/ZoeWu//posts/2022/01/02/233006.html</url>
+      
+        <content type="html"><![CDATA[<p>默认情况下，RHEL8已经安装了tuned软件包，并启用了tuned.service。如未安装，则需要手动进行安装并启动、启用tuned.service。</p><p>[root@rhel8 ~]# yum -y install tuned</p><p>[root@rhel8 ~]# systemctl start tuned.service</p><p>[root@rhel8 ~]# systemctl enable tuned.service</p><p><strong>tuned-adm</strong>命令可用于更改tuned守护进程的设置。tuned-adm命令可以<strong>查询当前设置、列出可用的配置文件、为系统推荐调优配置文件、直接更改配置文件或关闭优化</strong></p><p>使用<strong>tuned-adm active</strong>命令来确定<strong>当前活动的调优配置文件</strong></p><p>[root@localhost mnt]# tuned-adm active</p><p>Current active profile: virtual-guest</p><p>使用<strong>tuned-adm list</strong>命令可以<strong>列出所有可用的调优配置文件</strong>，包括内置的配置文件和系统管理员创建的自定义调优配置文件</p><p>[root@localhost mnt]# tuned-adm list</p><p>使用<strong>tuned-adm profile profilename</strong>命令可以将活动的配置文件<strong>切换为更符合系统当前调优要求的其他配置文件</strong></p><p>[root@localhost mnt]# tuned-adm profile virtual-guest</p><p>使用<strong>tuned-adm recommend</strong>命令可以为<strong>系统推荐调优配置文件</strong>，该机制用于在安装后确定系统的默认配置文件</p><p>[root@localhost mnt]# tuned-adm recommend </p><p>virtual-guest</p><p>要恢复当前配置文件所做的设置更改，可以切换到另一个配置文件或停用tuned守护进程。</p><p>利用<strong>tuned-adm off</strong>命令<strong>关闭tuned调优活动</strong></p><p>[root@localhost mnt]# tuned-adm off</p><p>[root@localhost mnt]# tuned-adm profile virtual-guest</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>日志管理</title>
+      
+      <link href="/ZoeWu//posts/2022/01/02/132953.html"/>
+      <url>/ZoeWu//posts/2022/01/02/132953.html</url>
+      
+        <content type="html"><![CDATA[<p> NONE</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>计划任务</title>
+      
+      <link href="/ZoeWu//posts/2021/12/25/202632.html"/>
+      <url>/ZoeWu//posts/2021/12/25/202632.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="at命令"><a href="#at命令" class="headerlink" title="at命令"></a>at命令</h1><p>使用at命令设置的计划任务只在指定的时间点执行一次，前提是对应的系统服务atq必须已经运行。需要注意的是，<strong>计划执行任务的时间、日期必须安排在当前系统的时刻之后</strong>，否则将无法正确设置计划任务</p><p>确认后将进入带”at&gt;“提示符的任务编辑界面，每行设置一条执行命令，可以依次设置多条语句，最后按<strong>Ctrl+d</strong>组合键提交任务即可，退出用<strong>Ctrl+c</strong></p><p>[root@localhost ~]# at 15:33</p><p>warning: commands will be executed using &#x2F;bin&#x2F;sh</p><p>at&gt; cp &#x2F;etc&#x2F;passwd &#x2F;root</p><p>at&gt; <EOT></EOT></p><p>job 3 at Sat Dec 18 15:33:00 2021    #在15：33时将&#x2F;etc&#x2F;passwd拷贝到&#x2F;root下</p><p>对于已经设置但还未执行（未到时间点）的计划任务，可以通过<strong>atq</strong>命令进行查询，但已执行过的at任务将不会再出现在列表中。</p><p>若要删除指定编号的at任务，可以使用<strong>atrm</strong>命令。</p><h1 id="crontab命令"><a href="#crontab命令" class="headerlink" title="crontab命令"></a>crontab命令</h1><p>设置用户的计划周期性任务列表主要通过crontab命令进行，结合不同的选项可以完成不同的计划任务，常用的选项如下：</p><p>-e：编辑计划任务列表。</p><p>-u：指定所管理的计划任务属于哪个用户，默认针对当前用户（自己），一般只有root用户有权限使用此选项（用于编辑、删除其他用户的计划任务）。</p><p>-l：列表显示计划任务。</p><p>-r：删除计划任务列表。</p><p>除了“*”以外，还可以使用减号“-”、逗号“，”、斜杠“&#x2F;”与数字构成表达式来表示较复杂的时间关系。</p><p>减号（“-”）：可以表示一个连续的时间范围，如1-4表示整数1,2,3,4。</p><p>逗号（“,”）：可以表示一个间隔的不连续范围，如3,4,6,8。</p><p>斜杠符号（“&#x2F;”）：可以用来指定间隔频率，如在日期字段中的“*&#x2F;3”表示每隔3天。</p><p><img src="/ZoeWu/D:/Blog\ZoeWu\img\Linux_3.png"></p><p><img src="/ZoeWu/D:/Blog\ZoeWu\img\Linux_4.png"></p><p>[root@localhost ~]# systemctl restart crond.service </p><p>[root@localhost ~]# systemctl enable crond.service </p><p>[root@localhost ~]# crontab -e -u root</p><p>40 15 * * * &#x2F;usr&#x2F;bin&#x2F;cp &#x2F;etc&#x2F;passwd &#x2F;root  #在每天的15：40将&#x2F;etc&#x2F;passwd拷贝到&#x2F;root</p><p>查询：</p><p>[root@localhost ~]# crontab -l -u root</p><p>40 15 * * * &#x2F;usr&#x2F;bin&#x2F;cp &#x2F;etc&#x2F;passwd &#x2F;root</p><p>删除计划任务：</p><p>[root@localhost ~]# crontab -r -u root   #删除root用户的所有计划任务</p><p>[root@localhost ~]# crontab -l -u root</p><p>no crontab for root</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>进程管理</title>
+      
+      <link href="/ZoeWu//posts/2021/12/22/232319.html"/>
+      <url>/ZoeWu//posts/2021/12/22/232319.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="进程管理的作用"><a href="#进程管理的作用" class="headerlink" title="进程管理的作用"></a>进程管理的作用</h1><p>（1）判断服务器的健康状态 </p><p>（2）查看系统中所有的进程 </p><p>（3）杀死进程 </p><h1 id="ps命令"><a href="#ps命令" class="headerlink" title="ps命令"></a>ps命令</h1><p>查看静态的系统进程信息。ps（Process Status）命令是Linux系统中最常用的进程查看工具，主要用于显示包含当前运行的各进程完整信息的静态快照。</p><p>ps 命令的基本格式如下：</p><p>[root@localhost ~]# ps aux   #查看系统中所有的进程</p><p>[root@localhost ~]# ps -le    #查看系统中所有的进程，而且还能看到进程的父进程的 PID 和进程优先级</p><p><strong>“ps -l” 只能看到当前 Shell 产生的进程</strong></p><h2 id="选项："><a href="#选项：" class="headerlink" title="选项："></a>选项：</h2><p>a：显示当前终端下的所有信息，包括其他用户的进程。与“x”选项结合时将显示系统中所有的进程信息。</p><p>u：使用以用户为主的格式输出进程信息。</p><p>x：显示当前用户所在终端下的进程信息。</p><p>e：显示系统内的所有进程信息。</p><p>l：使用长格式显示进程信息。</p><p>f：使用完整的格式显示进程信息</p><h2 id="ps命令输出信息的列表各字段的含义描述"><a href="#ps命令输出信息的列表各字段的含义描述" class="headerlink" title="ps命令输出信息的列表各字段的含义描述"></a>ps命令输出信息的列表各字段的含义描述</h2><p>USER：启动该进程的用户账号和名称。</p><p>PID：该进程在系统中的数字ID号，在当前系统中是唯一的。</p><p>%CPU：cpu占用的百分比。</p><p>%MEM：内存占用的百分比。</p><p>VSZ：占用虚拟内存（swap空间）的大小。</p><p>RSS：占用常驻内存（物理内存）的大小。</p><p>TTY：表明该进程在哪个终端上运行。“？”表示未知或不需要终端。</p><p>STAT：显示了当前的进行状态，如S（休眠）、R（运行）、Z（僵尸）、“&lt;”（高优先级）、N（低优级）、s（父进程）、“+”（前台进程）。对处于僵尸状态的进程应该给予手动终止。</p><p>START：启动该进程的时间。</p><p>TIME：该进程占用cpu的时间。</p><p>COMMAND：启动该进程的命令的名称。</p><h1 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h1><p>查看进程动态信息。使用ps命令查看到的是一个静态的进程信息，并不能连续地反馈出当前进程的运行状态。若希望以动态刷新的方式显 示各进程的状态的信息，可以使用top命令。 </p><p>top命令将会在当前终端以全屏交互式的界面显示进程排名，及时跟踪 cpu、内存等系统资源占用情况，默认情况下每3秒刷新一次。</p><h2 id="top命令输出信息中相关含义表述如下"><a href="#top命令输出信息中相关含义表述如下" class="headerlink" title="top命令输出信息中相关含义表述如下"></a>top命令输出信息中相关含义表述如下</h2><p>系统任务（Tasks）信息：total（总进程数）；running（正在运行的进程数）；sleeping（休眠的进程数）；stopped（中止的进程数）；zombie（僵死无响应的进程数）。</p><p>CPU占用信息：us（用户占用）；sy（内核占用）；ni（优先级调度占用）；id（空闲CPU）；wa（I&#x2F;O等待占用）；hi（硬件中断占用）；si（软件中断占用）；st（虚拟化占用）。要了解空闲的CPU百分比，主要看id部分。</p><p>内存占用（Mem）信息：total（总内存空间）；free（空闲内存）；used（已用内存）； buffers（缓冲区域）。</p><p>交换空间（Swap）占用：total（总交换空间）；free（空闲交换空间）；used（已用交换空间）； available（可用空间）。</p><h1 id="pgrep命令"><a href="#pgrep命令" class="headerlink" title="pgrep命令"></a>pgrep命令</h1><p>当使用ps命令查询某个进程的PID信息时，往往需要结合grep命令对输出结果进行过滤，但这样非常不方便，而pgrep命令则正是用来查询特定进程信息的专用工具。使用pgrep命令可以根据进程的名称、运行该进程的用户、进程所在的终端等多种属性查询特定进程的PID号。</p><p>通过pgrep命令，可以只指定进程的一部分名称进行查询，结合“-l”选项可同时输入对应的进程名。</p><p>例：</p><p>[root@localhost ~]# ps aux |grep httpd </p><p>root 1258 0.0 0.2 273844 10628 ?   Ss 16:07 0:00 &#x2F;usr&#x2F;sbin&#x2F;httpd - DFOREGROUND </p><p>apache 1319 0.0 0.2 286060 8220 ?   S 16:07 0:00 &#x2F;usr&#x2F;sbin&#x2F;httpd - DFOREGROUND</p><p>[root@localhost ~]# pgrep -l httpd </p><p>1258 httpd </p><p>1319 httpd </p><h1 id="pstree命令"><a href="#pstree命令" class="headerlink" title="pstree命令"></a>pstree命令</h1><p>pstree命令可以输出Linux系统中各进程的树形结构，从而更加直观地判断 各进程之间的相互关系（父、子进程）</p><p>命令基本格式：[root@localhost ~]# <strong>pstree [<strong><strong>选项</strong></strong>] [PID**<strong>或用户名</strong></strong>]**</p><p>-p：同时列出对应PID号</p><p>-a：列出完整命令信息</p><p>（使用时基本不带选项）</p><h1 id="控制进程"><a href="#控制进程" class="headerlink" title="控制进程"></a>控制进程</h1><p>挂起当前的进程</p><p>当Linux系统中的命令正在前台执行时（运行尚未结束），按<strong>Ctrl+Z</strong>组合键可以将当前进程挂起（调入后台并停止执行），这个操作在<strong>需要暂停当前进程并进行其他操作</strong>时特别有用</p><h2 id="查看后台的进程"><a href="#查看后台的进程" class="headerlink" title="查看后台的进程"></a>查看后台的进程</h2><p>当需要查看当前终端中在后台运行的进程任务时，可以使用<strong>jobs</strong>命令，结合“**-l<strong>”选项可以</strong>同时显示出该进程对应的PID号**</p><h2 id="将后台的进程恢复运行"><a href="#将后台的进程恢复运行" class="headerlink" title="将后台的进程恢复运行"></a>将后台的进程恢复运行</h2><p>使用后台（BackGround，简称<strong>bg</strong>）命令，<strong>可以将后台中暂停执行</strong>（如按<strong>Ctrl+Z</strong>组合键挂起）的任务恢复运行，继续在后台执行操作；而使用前台命令（ForeGround，简称<strong>fg</strong>）可以<strong>将后台任务重新恢复到前台运行</strong></p><p>启动后台进程需要使用“**&amp;<strong>”操作符，将“&amp;”操作符</strong>放在要执行命令的最后面<strong>，进程启动后</strong>直接放入后台运行**，而不占用前台的命令操作界面，方便用户进行其他操作。</p><h2 id="使用kill命令终止进程"><a href="#使用kill命令终止进程" class="headerlink" title="使用kill命令终止进程"></a>使用<strong>kill</strong>命令终止进程</h2><p>通过kill命令终止进程时，<strong>需要使用进程的PID号作为参数</strong>。无特定选项时，kill命令将给该进程发送终止信号并正常退出运行，若该进程已经无法响应，则可以结合“**-9<strong>”选项强行终止进程，强制终止进程时</strong>可能会导致程序运行的部分数据丢失<strong>，</strong>因此不到万不得已时不要轻易使用“-9”选项，强制终止进程**</p><p>[root@localhost ~]# pgrep vsftpd</p><p>34183</p><p>[root@localhost ~]# kill 34183</p><h2 id="使用killall命令终止进程"><a href="#使用killall命令终止进程" class="headerlink" title="使用killall命令终止进程"></a>使用<strong>killall</strong>命令终止进程</h2><p>使用killall命令<strong>可以通过进程名来终止进程</strong>，当需要结束系统中多个相同名称的进程时，使用killall命令将更加方便，效率更高，killall命令同样也有“**-9**”选项。</p><p>[root@localhost ~]# killall httpd</p><h2 id="使用pkill命令终止进程"><a href="#使用pkill命令终止进程" class="headerlink" title="使用pkill命令终止进程"></a>使用<strong>pkill</strong>命令终止进程</h2><p><strong>使用pkill命令可以</strong>根据进程的名称、运行该进程的用户、进程所在的终端等多种属性终止特定的进程<strong>。大部分选项与pgrep命令基本类似，如</strong>“-U”（指定用户） 、“-t”（指定终端）**等选项，使用起来非常方便。</p><p>[root@localhost ~]# pkill -U root</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
         <title>远程控制</title>
       
       <link href="/ZoeWu//posts/2021/12/19/130252.html"/>
@@ -138,6 +243,27 @@
       <url>/ZoeWu//posts/2021/12/17/123521.html</url>
       
         <content type="html"><![CDATA[<p>安装完一个软件包以后，应用程序可能会向系统复制大量的数据文件，并进行相关设置。在Linux系统中，典型的应用 程序通常由以下<strong>6****个部分组成</strong>。 </p><p>普通的可执行程序文件：一般保存 在&#x2F;usr&#x2F;bin目录中，普通用户即可执行。 </p><p>服务器程序、管理程序文件：一般 保存在&#x2F;usr&#x2F;sbin目录中，只有管理员能执行。 </p><p>配置文件：一般保存在&#x2F;etc目录 中，配置文件较多时会建立相应的子目录。 </p><p>日志文件：一般保存在&#x2F;var&#x2F;log目录中。 </p><p>关于应用程序的参考文档等数据： 一般保存在&#x2F;usr&#x2F;share&#x2F;doc&#x2F;目录中。 </p><p>执行文件及配置文件的man手册 页：一般保存在&#x2F;usr&#x2F;share&#x2F;man&#x2F;目录中。 </p><p>RPM 二进制包的命名需遵守统一的命名规则，用户通过名称就可以直接获取这类包的版本、适用平台等信息。</p><p>RPM 二进制包命名的一般格式如下：</p><p><strong>包名-版本号-发布次数-发行商-Linux平台适合的硬件平台-包扩展名</strong> </p><p>例如，RPM 包的名称是 httpd-2.2.15-15.el6.centos.1.i686.rpm，其中：</p><p>httpd：软件包名。这里需要注意， httped 是包名，而httpd-2.2.15-15.el6.centos.1.i686.rpm 通常称为包全名，包名和包全名是不同的 </p><p>在某些 Linux 命令中，有些命令（如包的安装和升级）使用的是包全名，而有些命令（包的查询和卸载）使用的是包名，一不小心就会弄错。 </p><p>2.2.15：包的版本号，版本号的格式通 常为主版本号.次版本号.修正号。 </p><p>15：二进制包发布的次数，表示此 RPM 包是第几次编程生成的。 </p><p>el*：软件发行商，el6 表示此包是由 Red Hat 公司发布，适合在 RHEL 6.x (Red Hat Enterprise Unux) 和 CentOS 6.x 上使 用。 </p><p>centos：表示此包适用于 CentOS 系 统。 </p><p>i686：表示此包使用的硬件平台，目前 的 RPM 包支持的平台如表 1 所示：</p><p>x86_64  64 位 CPU 可以安装 </p><p>noarch  没有硬件限制 </p><p><strong>使用</strong> <strong>rpm</strong> <strong>做查询命令</strong></p><p>格式如下： </p><p>[root@localhost ~]# rpm 选项 查询对象 </p><p><strong>rpm -q</strong>：查询软件包是否安装 </p><p>用 rpm 查询软件包是否安装的命令格式为：</p><p>[root@localhost ~]# rpm -q 包名  -q 表示查询，是 query 的首字母。 </p><p>[root@localhost Packages]# rpm -q vim-minimal </p><p>vim-minimal-8.0.1763-13.el8.x86_64 </p><p>查询已安装的RPM软件包信息</p><p>不带子选项的“-q”选项可用于查询已 知名称的软件包是否已经安装，需要使用准确的软件名作为参数（可以有多个），结合不同的子选项使用时可以进行更具体的查询。<strong>常用的</strong> <strong>4</strong> <strong>个子选项</strong></p><p>如下所述： </p><p><strong>-qa</strong>：显示当前系统中以<strong>RPM</strong>方式安装的所有软件列表。 </p><p>1、什么都不带，表示列出所有 以RPM方式安装的所有软件列表 </p><p>2、[root@localhost Packages]# rpm -qa | grep vsftpd </p><p><strong>-qi</strong>：查看指定软件包的名称、<strong>版本</strong>、许可协议及用途描述等详细信息** （–info）。 </p><p>[root@localhost Packages]# rpm -qi vim-minimal </p><p>Name : vim-minimal </p><p>Version : 3.0.3 </p><p>Release : 28.el8 </p><p>Architecture: x86_64 </p><p>Install Date: 2021年10月3日 星期日 14时18分53秒</p><p><strong>-ql</strong>：显示指定的软件包在当前系 <strong>统中安装的所有目录、文件列表</strong>（– list）。</p><p><strong>-qf</strong>：查看指定的文件或目录是由 <strong>哪个软件包所安装的</strong>（–file）。 </p><p>[root@localhost Packages]# rpm -qf &#x2F;etc&#x2F;passwd </p><p>setup-2.12.2-2.el8.noarch</p><p><strong>查询未安装的</strong> <strong>RPM</strong> <strong>软件包信息</strong> </p><p>注意，这里用的是<strong>包全名</strong>，且未安装的软件包需使用“<strong>绝对路径+包全名</strong>”的方式才能确定包。使用“-qp”选项时，必须以RPM软件包文件的路径作为参数（可以有多个），而不是软件包名称。其相关的子选项与使用“-q”查询时类似，常用的两个查询选项如下所述：</p><p><strong>-qpi</strong>：查看指定软件包的名称、版本、许可协议和用途描述等详细信息。</p><p>[root@localhost Packages]# rpm -qip vsftpd-3.0.3-28.el8.x86_64.rpm （包全名）</p><p><strong>-qpl</strong>：查看该软件包准备要安装的所有目标目录和文件列表。 </p><p>[root@localhost Packages]# rpm -qpl vsftpd-3.0.3-28.el8.x86_64.rpm （包全名） </p><p><strong>安装、升级、卸载</strong> <strong>RPM</strong> <strong>软件包</strong> </p><p>在日常系统管理工作中，安装、升级及卸载软件包是管理应用程序最基本的工作内容。使用rpm命令实现这些操作时，基本的命令选项如下所述：</p><p><strong>-i</strong>：在当前系统中安装一个<strong>新的RPM软件包</strong>。包全名 install </p><p>[root@localhost Packages]# rpm -i vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY</p><p><strong>-e</strong>：卸载指定名称的软件包。 erase </p><p>[root@localhost Packages]# rpm -e vsftpd</p><p><strong>-U</strong>：检查并升级系统中的某个软件包。若没有安装则进行安装，若已安装则进行升级 </p><p>[root@localhost Packages]# rpm - Uvh vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY Verifying… ############################## ### [100%] 准备中… ############################## ### [100%] 正在升级&#x2F;安装… 1:vsftpd-3.0.3-28.el8 ############################## ### [100%]</p><p><strong>-F</strong>：检查并更新系统中某个软件包，若该软件包原来并未安装，则放弃安装。还有几个相关的命令选项，可以用于辅助安装、卸载软件包的过程。 </p><p>[root@localhost Packages]# rpm -Fvh vsftpd-3.0.3-28.el8.x86_64.rpm </p><p>警告：vsftpd-3.0.3-28.el8.x86_ 64.rpm: 头V3 RSA&#x2F;SHA256 Signature, 密钥 ID fd431d51: NOKEY</p><p><strong>在安装或升级系统内核时，不允许使用****Uvh</strong> <strong>或</strong> <strong>Fvh ,</strong> <strong>需使用</strong> <strong>ivh</strong> </p><p><strong>–force****：强制安装某个软件包</strong>，当需要 替换现已安装的软件包及文件，或者安装一个比当前使用的软件版本更旧的软件时，可以使用此选项。强制安装。不管是否已经安装，都重新安装</p><p>[root@localhost Packages]# rpm -ivh vsftpd-3.0.3-28.el8.x86_64.rpm – force</p><p><strong>–nodeps</strong> ：在此安装或升级、卸载一个软件包时，不检查与其他软件包的依赖关系**。</p><p><strong>-h</strong>：在安装或升级软件包的过程** <strong>中，以“</strong>*#<strong>”号显示安装进度</strong>。hash </p><p><strong>-v</strong>：显示软件安装过程中的详细信息。verbose </p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>Linux内核优化</title>
+      
+      <link href="/ZoeWu//posts/2021/12/15/213432.html"/>
+      <url>/ZoeWu//posts/2021/12/15/213432.html</url>
+      
+        <content type="html"><![CDATA[<p><strong>查看当前系统内核版本</strong></p><p>可以使用“<strong>uname -r</strong>”命令获知</p><p>[root@localhost ~]# uname -r</p><p>4.18.0-147.el8.x86_64</p><p>内核模块是指<strong>文件系统、驱动程序</strong>等。内核模块存放的目录位置是**&#x2F;lib&#x2F;modules**。</p><p>[root@localhost ~]# cd &#x2F;lib&#x2F;modules</p><p>[root@localhost modules]# ls</p><p>4.18.0-144.el8.x86_64 4.18.0-147.el8.x86_64</p><p>[root@localhost modules]# cd 4.18.0-147.el8.x86_64&#x2F;</p><p>[root@localhost 4.18.0-147.el8.x86_64]# ls</p><p>[root@localhost 4.18.0-147.el8.x86_64]# cd kernel&#x2F;</p><p>[root@localhost kernel]# ls</p><p>arch crypto drivers fs kernel lib mm net sound virt</p><p>[root@localhost kernel]# cd fs</p><p>[root@localhost fs]# ls</p><p>binfmt_misc.ko.xz cramfs fscache jbd2 nfs_common pstore</p><p>cachefiles dlm fuse lockd nfsd squashfs</p><p>ceph ext4 gfs2 mbcache.ko.xz nls udf</p><p>cifs fat isofs nfs overlayfs xfs</p><p><strong>内核模块查看</strong></p><p>查看当前系统已经加载的模块，可以使用 “<strong>lsmod</strong>”命令获知。</p><p>[root@localhost fs]# lsmod</p><p>Module Size Used by</p><p>nls_utf8 16384 1</p><p>isofs 45056 1</p><p>uinput 20480 1</p><p>查看具体某个模块的详细信息，可以使用 “<strong>modinfo module_name</strong>” 命令。</p><p>[root@localhost fs]# modinfo nfs</p><p>filename: &#x2F;lib&#x2F;modules&#x2F;4.18.0-147.el8.x86_64&#x2F;kernel&#x2F;fs&#x2F;nfs&#x2F;nfs.ko.xz</p><p>license: GPL</p><p>author: Olaf Kirch <a href="mailto:&#111;&#x6b;&#x69;&#114;&#64;&#x6d;&#111;&#x6e;&#97;&#100;&#46;&#115;&#x77;&#98;&#x2e;&#100;&#101;">&#111;&#x6b;&#x69;&#114;&#64;&#x6d;&#111;&#x6e;&#97;&#100;&#46;&#115;&#x77;&#98;&#x2e;&#100;&#101;</a></p><p>alias: nfs4</p><p>alias: fs-nfs4</p><p>alias: fs-nfs</p><p><strong>内核模块管理</strong></p><p>加载内核模块：执行“<strong>modprobe module_name</strong>”命令加载模块</p><p>[root@localhost fs]# modprobe -v vfat   #也可以不加-v</p><p>卸载内核模块：执行“<strong>modprobe -r module_name</strong>”命令卸载模块</p><p>[root@localhost fs]# modprobe -r -v vfat</p>]]></content>
       
       
       

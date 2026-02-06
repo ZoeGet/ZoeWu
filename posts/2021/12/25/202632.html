@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计划任务 | 御坂小屋</title><meta name="author" content="Zoe Wu"><meta name="copyright" content="Zoe Wu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="at命令使用at命令设置的计划任务只在指定的时间点执行一次，前提是对应的系统服务atq必须已经运行。需要注意的是，计划执行任务的时间、日期必须安排在当前系统的时刻之后，否则将无法正确设置计划任务 确认后将进入带”at&gt;“提示符的任务编辑界面，每行设置一条执行命令，可以依次设置多条语句，最后按Ctrl+d组合键提交任务即可，退出用Ctrl+c [root@localhost ~]# at 15">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计划任务">
+<meta property="og:url" content="https://zoeget.github.io/ZoeWu/posts/2021/12/25/202632.html">
+<meta property="og:site_name" content="御坂小屋">
+<meta property="og:description" content="at命令使用at命令设置的计划任务只在指定的时间点执行一次，前提是对应的系统服务atq必须已经运行。需要注意的是，计划执行任务的时间、日期必须安排在当前系统的时刻之后，否则将无法正确设置计划任务 确认后将进入带”at&gt;“提示符的任务编辑界面，每行设置一条执行命令，可以依次设置多条语句，最后按Ctrl+d组合键提交任务即可，退出用Ctrl+c [root@localhost ~]# at 15">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png">
+<meta property="article:published_time" content="2021-12-25T12:26:32.000Z">
+<meta property="article:modified_time" content="2021-12-25T12:26:32.000Z">
+<meta property="article:author" content="Zoe Wu">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "计划任务",
+  "url": "https://zoeget.github.io/ZoeWu/posts/2021/12/25/202632.html",
+  "image": "https://zoeget.github.io/ZoeWu/img/favicon.png",
+  "datePublished": "2021-12-25T12:26:32.000Z",
+  "dateModified": "2021-12-25T12:26:32.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Zoe Wu",
+      "url": "https://zoeget.github.io/ZoeWu"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/ZoeWu/img/favicon.png"><link rel="canonical" href="https://zoeget.github.io/ZoeWu/posts/2021/12/25/202632.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/ZoeWu/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/ZoeWu/',
+  algolia: undefined,
+  localSearch: {"path":"/ZoeWu/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计划任务',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/ZoeWu/"><span class="site-name">御坂小屋</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">计划任务</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-12-25T12:26:32.000Z" title="Created 2021-12-25 20:26:32">2021-12-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-12-25T12:26:32.000Z" title="Updated 2021-12-25 20:26:32">2021-12-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h1 id="at命令"><a href="#at命令" class="headerlink" title="at命令"></a>at命令</h1><p>使用at命令设置的计划任务只在指定的时间点执行一次，前提是对应的系统服务atq必须已经运行。需要注意的是，<strong>计划执行任务的时间、日期必须安排在当前系统的时刻之后</strong>，否则将无法正确设置计划任务</p>
+<p>确认后将进入带”at&gt;“提示符的任务编辑界面，每行设置一条执行命令，可以依次设置多条语句，最后按<strong>Ctrl+d</strong>组合键提交任务即可，退出用<strong>Ctrl+c</strong></p>
+<p>[root@localhost ~]# at 15:33</p>
+<p>warning: commands will be executed using &#x2F;bin&#x2F;sh</p>
+<p>at&gt; cp &#x2F;etc&#x2F;passwd &#x2F;root</p>
+<p>at&gt; <EOT></EOT></p>
+<p>job 3 at Sat Dec 18 15:33:00 2021    #在15：33时将&#x2F;etc&#x2F;passwd拷贝到&#x2F;root下</p>
+<p>对于已经设置但还未执行（未到时间点）的计划任务，可以通过<strong>atq</strong>命令进行查询，但已执行过的at任务将不会再出现在列表中。</p>
+<p>若要删除指定编号的at任务，可以使用<strong>atrm</strong>命令。</p>
+<h1 id="crontab命令"><a href="#crontab命令" class="headerlink" title="crontab命令"></a>crontab命令</h1><p>设置用户的计划周期性任务列表主要通过crontab命令进行，结合不同的选项可以完成不同的计划任务，常用的选项如下：</p>
+<p>-e：编辑计划任务列表。</p>
+<p>-u：指定所管理的计划任务属于哪个用户，默认针对当前用户（自己），一般只有root用户有权限使用此选项（用于编辑、删除其他用户的计划任务）。</p>
+<p>-l：列表显示计划任务。</p>
+<p>-r：删除计划任务列表。</p>
+<p>除了“*”以外，还可以使用减号“-”、逗号“，”、斜杠“&#x2F;”与数字构成表达式来表示较复杂的时间关系。</p>
+<p>减号（“-”）：可以表示一个连续的时间范围，如1-4表示整数1,2,3,4。</p>
+<p>逗号（“,”）：可以表示一个间隔的不连续范围，如3,4,6,8。</p>
+<p>斜杠符号（“&#x2F;”）：可以用来指定间隔频率，如在日期字段中的“*&#x2F;3”表示每隔3天。</p>
+<p><img src="/ZoeWu/D:/Blog\ZoeWu\img\Linux_3.png"></p>
+<p><img src="/ZoeWu/D:/Blog\ZoeWu\img\Linux_4.png"></p>
+<p>[root@localhost ~]# systemctl restart crond.service </p>
+<p>[root@localhost ~]# systemctl enable crond.service </p>
+<p>[root@localhost ~]# crontab -e -u root</p>
+<p>40 15 * * * &#x2F;usr&#x2F;bin&#x2F;cp &#x2F;etc&#x2F;passwd &#x2F;root  #在每天的15：40将&#x2F;etc&#x2F;passwd拷贝到&#x2F;root</p>
+<p>查询：</p>
+<p>[root@localhost ~]# crontab -l -u root</p>
+<p>40 15 * * * &#x2F;usr&#x2F;bin&#x2F;cp &#x2F;etc&#x2F;passwd &#x2F;root</p>
+<p>删除计划任务：</p>
+<p>[root@localhost ~]# crontab -r -u root   #删除root用户的所有计划任务</p>
+<p>[root@localhost ~]# crontab -l -u root</p>
+<p>no crontab for root</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu">Zoe Wu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu/posts/2021/12/25/202632.html">https://zoeget.github.io/ZoeWu/posts/2021/12/25/202632.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/ZoeWu/tags/Linux/">Linux</a></div><div class="post-share"><div class="social-share" data-image="/ZoeWu/img/favicon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/ZoeWu/posts/2022/01/02/132953.html" title="日志管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">日志管理</div></div><div class="info-2"><div class="info-item-1"> NONE </div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/22/232319.html" title="进程管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">进程管理</div></div><div class="info-2"><div class="info-item-1">进程管理的作用（1）判断服务器的健康状态  （2）查看系统中所有的进程  （3）杀死进程  ps命令查看静态的系统进程信息。ps（Process Status）命令是Linux系统中最常用的进程查看工具，主要用于显示包含当前运行的各进程完整信息的静态快照。 ps 命令的基本格式如下： [root@localhost ~]# ps aux   #查看系统中所有的进程 [root@localhost ~]# ps -le    #查看系统中所有的进程，而且还能看到进程的父进程的 PID 和进程优先级 “ps -l” 只能看到当前 Shell 产生的进程 选项：a：显示当前终端下的所有信息，包括其他用户的进程。与“x”选项结合时将显示系统中所有的进程信息。 u：使用以用户为主的格式输出进程信息。 x：显示当前用户所在终端下的进程信息。 e：显示系统内的所有进程信息。 l：使用长格式显示进程信息。 f：使用完整的格式显示进程信息 ps命令输出信息的列表各字段的含义描述USER：启动该进程的用户账号和名称。 PID：该进程在系统中的数字ID号，在当前系统中是唯一的。 %CPU：cpu占用的...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/ZoeWu/posts/2021/12/07/202155.html" title="Linux常用命令"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-07</div><div class="info-item-2">Linux常用命令</div></div><div class="info-2"><div class="info-item-1">pwd  查看当前的工作目录 [root@localhost yum.repos.d]# cd &#x2F;var&#x2F;mail [root@localhost mail]# pwd &#x2F;var&#x2F;mail cd  切换工作目录 ls  列出目录及文件名列表显示目录内容 -a：全部的文件，连同隐藏文件（开头为 . 的文件）一起列出 -d：仅列出目录本身，而不是列出目录内的文件数据 -l：长数据串列出，包含文件的属性与权限等等数据  将家目录下的所有文件列出来（含属性与隐藏档） ls -al &#x2F;root du 统计目录及文件所占用的磁盘空间 -a或–all：显示目录中文件的大小 -h或–human-readable：以K、M、G为单位，提高信息的可读性 -s或–aummarize：仅显示总计 例： [root@localhost mail]# cd &#x2F;boot&#x2F; [root@localhost boot]# du -sh 118M    . [root@localhost boot]# du -ah 0    .&#x2F;efi...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/08/184902.html" title="VIM编辑器"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-08</div><div class="info-item-2">VIM编辑器</div></div><div class="info-2"><div class="info-item-1"> 命令模式  用户刚刚启动vi&#x2F;vim，就进入了命令模式 切换至输入模式 a：在当前光标位置之后插入内容 A：在光标所在行行尾插入内容 i：在当前光标位置之前插入内容 I：在光标所在行开头（行首）插入内容 o：在光标所在行的后面插入一个新行 O：在光标所在行的前面插入一个新行 命令模式下光标的移动方法 Ctrl+f  #屏幕向下移动一页，相当于PGDN Ctrl+b #屏幕向上移动一页，相当于PGUP 数字0 #移动到行首位置，相当于home $ #移动到行尾位置，相当于end 上下左右移动光标： k上 j下 h左 l右 命令模式下删除、复制与粘贴方法 yy #复制光标当前所在的行 nyy  #复制当前光标所在向下n行（n为数字） dd  #删除光标当前所在的行 ndd  #删除当前光标所在向下n行（n为数字） u  #撤销上一次的操作 p #将复制的内容粘贴在光标所在的下一行 P #将复制的内容粘贴在光标所在的上一行 x  #删除光标所在后一个字符 X  #删除光标所有前一个字符 搜索 &#x2F; 搜索 查看下一个匹配，按下n(小写n) 跳转到上一个匹配，按下N（s...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/17/205742.html" title="YUM"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-17</div><div class="info-item-2">YUM</div></div><div class="info-2"><div class="info-item-1">挂载：mount &#x2F;dev&#x2F;cdrom &#x2F;mnt 转到yum仓库目录下：cd &#x2F;etc&#x2F;yum.repos.d&#x2F; vim server.repo [BaseOS]                #代表yum仓库的名字 name&#x3D;redhat BaseOS        #说明这个软件仓库的主机名称 baseurl&#x3D;file:&#x2F;&#x2F;&#x2F;mnt&#x2F;BaseOS   #这里就是repodata目录所在的位置 enabled&#x3D;1               #配置是否启用这一yum仓库 gpgcheck&#x3D;0              #指定是否检查rpm软件包中的数字签名 [AppStream] name&#x3D;redhat AppStream baseurl&#x3D;file:&#x2F;&#x2F;&#x2F;mnt&#x2F;AppStream enabled&#x3D;1 gpgcheck&#x3D;0 搭建完毕后可以用 yum list a...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/17/123521.html" title="rpm 应用程序的安装与管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-17</div><div class="info-item-2">rpm 应用程序的安装与管理</div></div><div class="info-2"><div class="info-item-1">安装完一个软件包以后，应用程序可能会向系统复制大量的数据文件，并进行相关设置。在Linux系统中，典型的应用 程序通常由以下6****个部分组成。  普通的可执行程序文件：一般保存 在&#x2F;usr&#x2F;bin目录中，普通用户即可执行。  服务器程序、管理程序文件：一般 保存在&#x2F;usr&#x2F;sbin目录中，只有管理员能执行。  配置文件：一般保存在&#x2F;etc目录 中，配置文件较多时会建立相应的子目录。  日志文件：一般保存在&#x2F;var&#x2F;log目录中。  关于应用程序的参考文档等数据： 一般保存在&#x2F;usr&#x2F;share&#x2F;doc&#x2F;目录中。  执行文件及配置文件的man手册 页：一般保存在&#x2F;usr&#x2F;share&#x2F;man&#x2F;目录中。  RPM 二进制包的命名需遵守统一的命名规则，用户通过名称就可以直接获取这类包的版本、适用平台等信息。 RPM 二进制包命名的一般格式如下： 包名-版本号-发布次数-发行商-Linux平台适合的硬件平台-包扩展名  例如，RPM 包的...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/09/163227.html" title="nmcli 网络管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-09</div><div class="info-item-2">nmcli 网络管理</div></div><div class="info-2"><div class="info-item-1">在RHEL 8中主机网络接口配置文件保存在**&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts**目录中。 手动方式配置网络时，需要配置的参数有：IP地址、子网掩码、网关、DNS地址及启用连接。 nmcli 命令配置网络  列出当前主机所有可用的网络连接：nmcli connection show  [root@localhost ~]# nmcli connection show  删除连接：nmcli connection delete 连接名称  [root@localhost ~]# nmcli connection delete ens160  添加网络连接：nmcli connection add   # con-name 连接名称 ifname 设备名称 type 类型 ethernet 以太网 [root@localhost ~]# nmcli connection add con-name ens160 ifname ens160 type ethernet  修改网络连接：nmcli connection modify...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2021/12/05/133752.html" title="开机破解密码：系统启动过程和启动目标"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-05</div><div class="info-item-2">开机破解密码：系统启动过程和启动目标</div></div><div class="info-2"><div class="info-item-1">1.reboot  重启  2.按e 进入grub2菜单  3.在linux所在行的末尾输入rd.break  4.按Ctrl+X 进入伪系统  5.mount -o remount,rw &#x2F;sysroot  重新挂载sysroot，并给读写权限 6.chroot &#x2F;sysroot  进入真系统  7.passwd root  设置root用户密码  8.touch &#x2F;.autorelabel  给selinux重打标签  9.两次exit  退出 </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Zoe Wu</div><div class="author-info-description"></div><div class="site-data"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZoeGet"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Hello,This is my Blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#at%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">at命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crontab%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">crontab命令</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/02/04/162542.html" title="OpenSpec部署">OpenSpec部署</a><time datetime="2026-02-04T08:25:42.000Z" title="Created 2026-02-04 16:25:42">2026-02-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2025/11/05/174704.html" title="Ensp模拟器中交换机无法启动，命令行界面只显示The device is running的解决办法。">Ensp模拟器中交换机无法启动，命令行界面只显示The device is running的解决办法。</a><time datetime="2025-11-05T09:47:04.000Z" title="Created 2025-11-05 17:47:04">2025-11-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2024/01/15/135520.html" title="NAT 网络地址转换">NAT 网络地址转换</a><time datetime="2024-01-15T05:55:20.000Z" title="Created 2024-01-15 13:55:20">2024-01-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2023/12/17/180945.html" title="TCP协议三次握手与四次挥手">TCP协议三次握手与四次挥手</a><time datetime="2023-12-17T10:09:45.000Z" title="Created 2023-12-17 18:09:45">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2022/01/05/143534.html" title="进程优先级">进程优先级</a><time datetime="2022-01-05T06:35:34.000Z" title="Created 2022-01-05 14:35:34">2022-01-05</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Zoe Wu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div><div class="footer_custom_text">滋滋滋滋滋滋滋滋滋滋</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/ZoeWu/js/utils.js?v=5.5.1"></script><script src="/ZoeWu/js/main.js?v=5.5.1"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/ZoeWu/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
