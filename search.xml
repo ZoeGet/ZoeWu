@@ -6,27 +6,6 @@
     
     <entry>
       
-        <title>VIM编辑器</title>
-      
-      <link href="/ZoeWu//posts/2026/02/06/202538.html"/>
-      <url>/ZoeWu//posts/2026/02/06/202538.html</url>
-      
-        <content type="html"><![CDATA[<p><img src="/ZoeWu/posts/2026/02/06/202538/Linux_2.png"></p><p><strong>命令模式</strong></p><p> 用户刚刚启动vi&#x2F;vim，就进入了命令模式</p><p><strong>切换至输入模式</strong></p><p>a：在当前光标位置之后插入内容</p><p>A：在光标所在行行尾插入内容</p><p>i：在当前光标位置之前插入内容</p><p>I：在光标所在行开头（行首）插入内容</p><p>o：在光标所在行的后面插入一个新行</p><p>O：在光标所在行的前面插入一个新行</p><p><strong>命令模式下光标的移动方法</strong></p><p>Ctrl+f  #屏幕向下移动一页，相当于PGDN</p><p>Ctrl+b #屏幕向上移动一页，相当于PGUP</p><p>数字0 #移动到行首位置，相当于home</p><p>$ #移动到行尾位置，相当于end</p><p>上下左右移动光标：</p><p>k上 j下 h左 l右</p><p><strong>命令模式下删除、复制与粘贴方法</strong></p><p>yy #复制光标当前所在的行</p><p>nyy  #复制当前光标所在向下n行（n为数字）</p><p>dd  #删除光标当前所在的行</p><p>ndd  #删除当前光标所在向下n行（n为数字）</p><p>u  #撤销上一次的操作</p><p>p #将复制的内容粘贴在光标所在的下一行</p><p>P #将复制的内容粘贴在光标所在的上一行</p><p>x  #删除光标所在后一个字符</p><p>X  #删除光标所有前一个字符</p><p><strong>搜索</strong></p><p>&#x2F; 搜索</p><p>查看下一个匹配，按下n(小写n)</p><p>跳转到上一个匹配，按下N（shift+n）</p><p>取消高亮：输入:nohlsearch 也可以:set nohlsearch； 当然，可以简写，noh或者set noh</p><p><strong>在命令模式中按“：”可以切换到末行模式</strong></p><p>wq  保存并退出 Vim 编辑器 write quit</p><p>:wq!  保存并强制退出 Vim 编辑器</p><p>:q  不保存就退出 Vim 编辑器</p><p>:q!  不保存，且强制退出 Vim 编辑器</p><p>:w  保存但是不退出 Vim 编辑器</p><p>:w!  强制保存文本</p><p>:w filVename  另存到 filename 文件</p><p>:x！  保存文本，并退出 Vim 编辑器，更通用的一个 vim 命令</p><p>ZZ  命令模式下直接退出 Vim 编辑器</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> Linux </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      
         <title>Linux系统常用命令</title>
       
       <link href="/ZoeWu//posts/2026/02/06/202154.html"/>
@@ -123,6 +102,27 @@
         <tags>
             
             <tag> Datacom Communication </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
+        <title>VIM编辑器</title>
+      
+      <link href="/ZoeWu//posts/2021/12/16/184902.html"/>
+      <url>/ZoeWu//posts/2021/12/16/184902.html</url>
+      
+        <content type="html"><![CDATA[<p><img src="/ZoeWu/posts/2026/02/06/202538/Linux_2.png"></p><p><strong>命令模式</strong></p><p> 用户刚刚启动vi&#x2F;vim，就进入了命令模式</p><p><strong>切换至输入模式</strong></p><p>a：在当前光标位置之后插入内容</p><p>A：在光标所在行行尾插入内容</p><p>i：在当前光标位置之前插入内容</p><p>I：在光标所在行开头（行首）插入内容</p><p>o：在光标所在行的后面插入一个新行</p><p>O：在光标所在行的前面插入一个新行</p><p><strong>命令模式下光标的移动方法</strong></p><p>Ctrl+f  #屏幕向下移动一页，相当于PGDN</p><p>Ctrl+b #屏幕向上移动一页，相当于PGUP</p><p>数字0 #移动到行首位置，相当于home</p><p>$ #移动到行尾位置，相当于end</p><p>上下左右移动光标：</p><p>k上 j下 h左 l右</p><p><strong>命令模式下删除、复制与粘贴方法</strong></p><p>yy #复制光标当前所在的行</p><p>nyy  #复制当前光标所在向下n行（n为数字）</p><p>dd  #删除光标当前所在的行</p><p>ndd  #删除当前光标所在向下n行（n为数字）</p><p>u  #撤销上一次的操作</p><p>p #将复制的内容粘贴在光标所在的下一行</p><p>P #将复制的内容粘贴在光标所在的上一行</p><p>x  #删除光标所在后一个字符</p><p>X  #删除光标所有前一个字符</p><p><strong>搜索</strong></p><p>&#x2F; 搜索</p><p>查看下一个匹配，按下n(小写n)</p><p>跳转到上一个匹配，按下N（shift+n）</p><p>取消高亮：输入:nohlsearch 也可以:set nohlsearch； 当然，可以简写，noh或者set noh</p><p><strong>在命令模式中按“：”可以切换到末行模式</strong></p><p>wq  保存并退出 Vim 编辑器 write quit</p><p>:wq!  保存并强制退出 Vim 编辑器</p><p>:q  不保存就退出 Vim 编辑器</p><p>:q!  不保存，且强制退出 Vim 编辑器</p><p>:w  保存但是不退出 Vim 编辑器</p><p>:w!  强制保存文本</p><p>:w filVename  另存到 filename 文件</p><p>:x！  保存文本，并退出 Vim 编辑器，更通用的一个 vim 命令</p><p>ZZ  命令模式下直接退出 Vim 编辑器</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
             
         </tags>
       
