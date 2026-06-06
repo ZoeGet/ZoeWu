@@ -14,6 +14,8 @@
 
 站点使用 [Hexo](https://hexo.io/) 静态博客框架搭建，搭配 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly) 主题，部署在 GitHub Pages 上。
 
+本站链接 https://zoeget.github.io/ZoeWu/
+
 ## 📂 内容分类
 
 - Linux 运维
