@@ -37,6 +37,37 @@
     
     <entry>
       
+        <title>Git提交报错Author identity unknown解决办法</title>
+      
+      <link href="/ZoeWu//posts/2026/07/13/000000.html"/>
+      <url>/ZoeWu//posts/2026/07/13/000000.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>在使用 Git 提交代码到 GitHub 仓库时，如果本机还没有配置 Git 提交者身份信息，执行 <code>git commit</code> 可能会出现下面的报错：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Author identity unknown</span><br><span class="line"></span><br><span class="line">*** Please tell me <span class="built_in">who</span> you are.</span><br><span class="line"></span><br><span class="line">Run</span><br><span class="line"></span><br><span class="line">  git config --global user.email <span class="string">&quot;you@example.com&quot;</span></span><br><span class="line">  git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line"></span><br><span class="line">to <span class="built_in">set</span> your account<span class="string">&#x27;s default identity.</span></span><br><span class="line"><span class="string">Omit --global to set the identity only in this repository.</span></span><br></pre></td></tr></table></figure><p>这个报错的意思是：Git 不知道本次提交应该使用哪个用户名和邮箱作为提交者信息，所以拒绝继续创建提交记录。</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>使用 GitHub 账号时，只需要把 <code>user.name</code> 和 <code>user.email</code> 配置成自己的 GitHub 用户名和邮箱即可。</p><p>执行下面两条命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;you@example.com&quot;</span></span><br></pre></td></tr></table></figure><p>其中：</p><table><thead><tr><th>配置项</th><th>说明</th></tr></thead><tbody><tr><td><code>user.name</code></td><td>提交记录中显示的用户名</td></tr><tr><td><code>user.email</code></td><td>提交记录中显示的邮箱</td></tr><tr><td><code>--global</code></td><td>表示配置到当前系统用户，对所有 Git 仓库生效</td></tr></tbody></table><p>如果只想让配置在当前仓库生效，可以去掉 <code>--global</code>：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">git config user.email <span class="string">&quot;you@example.com&quot;</span></span><br></pre></td></tr></table></figure><h2 id="检查配置是否生效"><a href="#检查配置是否生效" class="headerlink" title="检查配置是否生效"></a>检查配置是否生效</h2><p>配置完成后，可以执行下面的命令查看全局 Git 配置：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global --list</span><br></pre></td></tr></table></figure><p>如果能看到类似下面的内容，说明配置已经生效：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.name=Your Name</span><br><span class="line">user.email=you@example.com</span><br></pre></td></tr></table></figure><p>也可以单独查看某一项配置：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name</span><br><span class="line">git config --global user.email</span><br></pre></td></tr></table></figure><h2 id="重新提交代码"><a href="#重新提交代码" class="headerlink" title="重新提交代码"></a>重新提交代码</h2><p>配置完成后，重新执行添加和提交命令即可：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;提交说明&quot;</span></span><br></pre></td></tr></table></figure><p>如果提交成功，后续再执行 <code>git push</code> 推送到 GitHub 仓库即可：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>Author identity unknown</code> 不是 GitHub 仓库权限问题，而是本机 Git 没有配置提交者身份信息。</p><p>常用解决命令如下：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;you@example.com&quot;</span></span><br></pre></td></tr></table></figure><p>配置完成后，再重新执行 <code>git add</code>、<code>git commit</code> 和 <code>git push</code>，就可以正常提交代码。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Git </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> 报错解决 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      
         <title>Codex更新桌面快捷方式PowerShell脚本</title>
       
       <link href="/ZoeWu//posts/2026/07/09/122932.html"/>
