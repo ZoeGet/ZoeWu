@@ -83,11 +83,6 @@
 hexo clean
 hexo g
 hexo s
-```
-
-```bash
-hexo clean
-hexo g
 hexo d
 ```
 
