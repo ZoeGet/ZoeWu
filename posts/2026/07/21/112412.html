@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PlatformIO配置ESP32-S3-N16R8开发板记录 | 御坂小屋</title><meta name="author" content="Zoe Wu"><meta name="copyright" content="Zoe Wu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="一、问题背景在 PlatformIO 中使用 ESP32-S3-N16R8 开发板时，可能会遇到一个问题：PlatformIO 自带的开发板列表里没有完全对应的板型。 ESP32-S3-N16R8 的常见规格是：  Flash：16MB； PSRAM：8MB； 芯片：ESP32-S3； 框架：Arduino。  如果直接随便选择一个 ESP32-S3 板型，可能会出现下面几类问题：  PSRAM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PlatformIO配置ESP32-S3-N16R8开发板记录">
+<meta property="og:url" content="https://zoeget.github.io/ZoeWu/posts/2026/07/21/112412.html">
+<meta property="og:site_name" content="御坂小屋">
+<meta property="og:description" content="一、问题背景在 PlatformIO 中使用 ESP32-S3-N16R8 开发板时，可能会遇到一个问题：PlatformIO 自带的开发板列表里没有完全对应的板型。 ESP32-S3-N16R8 的常见规格是：  Flash：16MB； PSRAM：8MB； 芯片：ESP32-S3； 框架：Arduino。  如果直接随便选择一个 ESP32-S3 板型，可能会出现下面几类问题：  PSRAM">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png">
+<meta property="article:published_time" content="2026-07-21T03:24:12.000Z">
+<meta property="article:modified_time" content="2026-07-21T03:24:47.090Z">
+<meta property="article:author" content="Zoe Wu">
+<meta property="article:tag" content="PlatformIO">
+<meta property="article:tag" content="ESP32-S3">
+<meta property="article:tag" content="Arduino">
+<meta property="article:tag" content="PSRAM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PlatformIO配置ESP32-S3-N16R8开发板记录",
+  "url": "https://zoeget.github.io/ZoeWu/posts/2026/07/21/112412.html",
+  "image": "https://zoeget.github.io/ZoeWu/img/favicon.png",
+  "datePublished": "2026-07-21T03:24:12.000Z",
+  "dateModified": "2026-07-21T03:24:47.090Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Zoe Wu",
+      "url": "https://zoeget.github.io/ZoeWu"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/ZoeWu/img/favicon.png"><link rel="canonical" href="https://zoeget.github.io/ZoeWu/posts/2026/07/21/112412.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/ZoeWu/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/ZoeWu/',
+  algolia: undefined,
+  localSearch: {"path":"/ZoeWu/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PlatformIO配置ESP32-S3-N16R8开发板记录',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">26</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/ZoeWu/"><span class="site-name">御坂小屋</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">PlatformIO配置ESP32-S3-N16R8开发板记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-07-21T03:24:12.000Z" title="Created 2026-07-21 11:24:12">2026-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-07-21T03:24:47.090Z" title="Updated 2026-07-21 11:24:47">2026-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/ZoeWu/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h2 id="一、问题背景"><a href="#一、问题背景" class="headerlink" title="一、问题背景"></a>一、问题背景</h2><p>在 PlatformIO 中使用 ESP32-S3-N16R8 开发板时，可能会遇到一个问题：PlatformIO 自带的开发板列表里没有完全对应的板型。</p>
+<p>ESP32-S3-N16R8 的常见规格是：</p>
+<ul>
+<li>Flash：16MB；</li>
+<li>PSRAM：8MB；</li>
+<li>芯片：ESP32-S3；</li>
+<li>框架：Arduino。</li>
+</ul>
+<p>如果直接随便选择一个 ESP32-S3 板型，可能会出现下面几类问题：</p>
+<ul>
+<li>PSRAM 无法正确识别；</li>
+<li>8MB PSRAM 没有被启用；</li>
+<li>Flash 容量识别不正确；</li>
+<li>程序可以编译，但下载后无法正常运行；</li>
+<li>Arduino IDE 中能正常使用，但 PlatformIO 中配置不对。</li>
+</ul>
+<p>核心原因是：PlatformIO 的板型配置会影响 Flash、PSRAM、分区表和启动参数。如果选用的板型和实际硬件不一致，就容易出现运行异常。</p>
+<h2 id="二、简单解决办法"><a href="#二、简单解决办法" class="headerlink" title="二、简单解决办法"></a>二、简单解决办法</h2><p>可以先把开发板模型设置为：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">board</span> = esp32-s3-devkitc-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>platformio.ini</code> 中补充 Flash、PSRAM 和分区表相关配置。</p>
+<p>示例配置如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[env:esp32s3]</span></span><br><span class="line"><span class="attr">platform</span> = espressif32</span><br><span class="line"><span class="attr">board</span> = esp32-s3-devkitc-<span class="number">1</span></span><br><span class="line"><span class="attr">framework</span> = ardui<span class="literal">no</span></span><br><span class="line"></span><br><span class="line"><span class="comment">; 指定 16MB Flash 分区表</span></span><br><span class="line"><span class="attr">board_build.arduino.partitions</span> = default_16MB.csv</span><br><span class="line"></span><br><span class="line"><span class="comment">; 指定 Flash 和 PSRAM 的运行模式</span></span><br><span class="line"><span class="attr">board_build.arduino.memory_type</span> = qio_opi</span><br><span class="line"></span><br><span class="line"><span class="comment">; 启用 PSRAM</span></span><br><span class="line"><span class="attr">build_flags</span> =</span><br><span class="line">  -DBOARD_HAS_PSRAM</span><br><span class="line"></span><br><span class="line"><span class="comment">; 指定 Flash 容量为 16MB</span></span><br><span class="line"><span class="attr">board_upload.flash_size</span> = <span class="number">16</span>MB</span><br></pre></td></tr></table></figure>
+
+<p>这段配置的作用如下：</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>platform = espressif32</code></td>
+<td>使用 ESP32 平台支持包</td>
+</tr>
+<tr>
+<td><code>board = esp32-s3-devkitc-1</code></td>
+<td>使用 ESP32-S3 DevKitC-1 作为基础板型</td>
+</tr>
+<tr>
+<td><code>framework = arduino</code></td>
+<td>使用 Arduino 框架开发</td>
+</tr>
+<tr>
+<td><code>board_build.arduino.partitions = default_16MB.csv</code></td>
+<td>使用 16MB Flash 对应的分区表</td>
+</tr>
+<tr>
+<td><code>board_build.arduino.memory_type = qio_opi</code></td>
+<td>设置 Flash &#x2F; PSRAM 的工作模式</td>
+</tr>
+<tr>
+<td><code>-DBOARD_HAS_PSRAM</code></td>
+<td>编译时启用 PSRAM 支持</td>
+</tr>
+<tr>
+<td><code>board_upload.flash_size = 16MB</code></td>
+<td>告诉 PlatformIO 当前板子的 Flash 是 16MB</td>
+</tr>
+</tbody></table>
+<p>配置完成后，重新编译并下载即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pio run</span><br><span class="line">pio run -t upload</span><br></pre></td></tr></table></figure>
+
+<p>如果需要打开串口监视器，可以执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pio device monitor</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、验证-PSRAM-是否启用"><a href="#三、验证-PSRAM-是否启用" class="headerlink" title="三、验证 PSRAM 是否启用"></a>三、验证 PSRAM 是否启用</h2><p>为了确认 PSRAM 是否真的被识别，可以在 Arduino 代码中加入简单检查。</p>
+<p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Arduino.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Serial.<span class="built_in">begin</span>(<span class="number">115200</span>);</span><br><span class="line">  <span class="built_in">delay</span>(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">psramFound</span>()) &#123;</span><br><span class="line">    Serial.<span class="built_in">println</span>(<span class="string">&quot;PSRAM found&quot;</span>);</span><br><span class="line">    Serial.<span class="built_in">printf</span>(<span class="string">&quot;PSRAM size: %u bytes\n&quot;</span>, ESP.<span class="built_in">getPsramSize</span>());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    Serial.<span class="built_in">println</span>(<span class="string">&quot;PSRAM not found&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Serial.<span class="built_in">printf</span>(<span class="string">&quot;Flash size: %u bytes\n&quot;</span>, ESP.<span class="built_in">getFlashChipSize</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下载后打开串口，如果能看到类似输出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PSRAM found</span><br><span class="line">PSRAM size: 8388608 bytes</span><br><span class="line">Flash size: 16777216 bytes</span><br></pre></td></tr></table></figure>
+
+<p>说明 8MB PSRAM 和 16MB Flash 已经被正确识别。</p>
+<h2 id="四、注意事项"><a href="#四、注意事项" class="headerlink" title="四、注意事项"></a>四、注意事项</h2><p>不同 ESP32-S3 模组的 Flash &#x2F; PSRAM 类型可能不完全一样，<code>memory_type</code> 不一定都适合使用 <code>qio_opi</code>。</p>
+<p>如果配置后仍然无法启动，可以重点检查：</p>
+<ul>
+<li>开发板实际 Flash 容量是否真的是 16MB；</li>
+<li>PSRAM 类型是否为 OPI；</li>
+<li><code>board_build.arduino.memory_type</code> 是否匹配硬件；</li>
+<li>PlatformIO 的 <code>espressif32</code> 平台版本是否过旧；</li>
+<li>下载串口和启动模式是否正常。</li>
+</ul>
+<p>如果不确定当前芯片参数，可以先查看模组丝印、购买页面参数，或者参考 Arduino IDE 中可正常运行时选择的 Flash &#x2F; PSRAM 配置。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>PlatformIO 中没有完全匹配 ESP32-S3-N16R8 的板型时，可以使用 <code>esp32-s3-devkitc-1</code> 作为基础板型，再通过 <code>platformio.ini</code> 手动指定：</p>
+<ul>
+<li>16MB Flash 分区表；</li>
+<li>Flash &#x2F; PSRAM 运行模式；</li>
+<li>PSRAM 编译宏；</li>
+<li>Flash 容量。</li>
+</ul>
+<p>核心配置如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">board</span> = esp32-s3-devkitc-<span class="number">1</span></span><br><span class="line"><span class="attr">board_build.arduino.partitions</span> = default_16MB.csv</span><br><span class="line"><span class="attr">board_build.arduino.memory_type</span> = qio_opi</span><br><span class="line"><span class="attr">build_flags</span> = -DBOARD_HAS_PSRAM</span><br><span class="line"><span class="attr">board_upload.flash_size</span> = <span class="number">16</span>MB</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以让 PlatformIO 正确处理 ESP32-S3-N16R8 的 16MB Flash 和 8MB PSRAM。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/macrored/p/17357581.html">PlatformIO ESP32-S3-N16R8 配置记录</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu">Zoe Wu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu/posts/2026/07/21/112412.html">https://zoeget.github.io/ZoeWu/posts/2026/07/21/112412.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/ZoeWu/tags/PlatformIO/">PlatformIO</a><a class="post-meta__tags" href="/ZoeWu/tags/ESP32-S3/">ESP32-S3</a><a class="post-meta__tags" href="/ZoeWu/tags/Arduino/">Arduino</a><a class="post-meta__tags" href="/ZoeWu/tags/PSRAM/">PSRAM</a></div><div class="post-share"><div class="social-share" data-image="/ZoeWu/img/favicon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/ZoeWu/posts/2026/07/15/000000.html" title="Git远程仓库remote命令使用笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Git远程仓库remote命令使用笔记</div></div><div class="info-2"><div class="info-item-1">前言git remote 命令用于管理当前 Git 仓库关联的远程仓库。 平时把本地代码推送到 GitHub、Gitee 或公司 Git 服务器时，本地仓库并不是直接知道远程仓库在哪里，而是通过一个远程仓库别名来记录远程地址。 最常见的远程仓库别名就是： 1origin  例如： 1git remote add origin git@github.com:user/repo.git  这条命令的意思是：给当前本地仓库添加一个名为 origin 的远程仓库地址。 一、什么是远程仓库远程仓库就是托管在其他位置的 Git 仓库，常见位置包括：  GitHub； Gitee； GitLab； 公司内部 Git 服务器； 自己搭建的 Git 服务。  本地仓库负责保存本机代码和提交记录，远程仓库负责同步、备份和多人协作。 常见工作流程如下： 123git add .git commit -m &quot;提交说明&quot;git push origin main  其中 origin 就是远程仓库名称，main 是要推送的远程分支。 二、查看远程仓库1. 查看远程仓库名称执行： 1git...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Zoe Wu</div><div class="author-info-description"></div><div class="site-data"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">26</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZoeGet"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Hello,This is my Blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">一、问题背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%AE%80%E5%8D%95%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">二、简单解决办法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%AA%8C%E8%AF%81-PSRAM-%E6%98%AF%E5%90%A6%E5%90%AF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">三、验证 PSRAM 是否启用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.</span> <span class="toc-text">四、注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/21/112412.html" title="PlatformIO配置ESP32-S3-N16R8开发板记录">PlatformIO配置ESP32-S3-N16R8开发板记录</a><time datetime="2026-07-21T03:24:12.000Z" title="Created 2026-07-21 11:24:12">2026-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/15/000000.html" title="Git远程仓库remote命令使用笔记">Git远程仓库remote命令使用笔记</a><time datetime="2026-07-14T16:00:00.000Z" title="Created 2026-07-15 00:00:00">2026-07-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/14/131056.html" title="Git提交信息规范Conventional Commits">Git提交信息规范Conventional Commits</a><time datetime="2026-07-14T05:10:56.000Z" title="Created 2026-07-14 13:10:56">2026-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/13/134152.html" title="Codex文件打开目标从Cursor切换到VS Code修复记录">Codex文件打开目标从Cursor切换到VS Code修复记录</a><time datetime="2026-07-13T05:41:52.000Z" title="Created 2026-07-13 13:41:52">2026-07-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/13/130533.html" title="Hexo部署报错detected dubious ownership解决办法">Hexo部署报错detected dubious ownership解决办法</a><time datetime="2026-07-13T05:05:33.000Z" title="Created 2026-07-13 13:05:33">2026-07-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Zoe Wu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div><div class="footer_custom_text">滋滋滋滋滋滋滋滋滋滋</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/ZoeWu/js/utils.js?v=5.5.1"></script><script src="/ZoeWu/js/main.js?v=5.5.1"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/ZoeWu/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
