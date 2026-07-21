@@ -26,7 +26,7 @@ https://zoeget.github.io/ZoeWu/
 
 - **Linux 运维**：常用命令、软件包管理、网络管理、进程管理、计划任务、日志管理、系统调优等。
 - **数据通信 / 网络**：NAT、TCP 三次握手与四次挥手、eNSP 模拟器问题处理等。
-- **嵌入式开发**：STM32、HAL 库、ST7735 TFT 屏幕驱动、ESP32-S3、PlatformIO 等。
+- **嵌入式开发**：STM32、HAL 库、ST7735 TFT 屏幕驱动、ESP32-S3、ESP32-C3、PlatformIO、WiFi 调试等。
 - **Git / GitHub**：提交身份配置、提交信息规范、远程仓库、分支切换、初始化到推送流程等。
 - **Hexo / 博客维护**：写作流程、部署排错、GitHub Pages 发布问题等。
 - **开发工具**：Codex、VS Code、Cursor、PowerShell 脚本、OpenSpec 部署等。

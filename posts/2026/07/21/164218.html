@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法 | 御坂小屋</title><meta name="author" content="Zoe Wu"><meta name="copyright" content="Zoe Wu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="前言本文记录一个 ESP-C3 Super Mini 开发板连接 WiFi 失败的问题。 问题现象比较迷惑：开发板可以扫描到附近的 WiFi，但是连接时一直失败，偶尔能连上也会很快断开。常规排查路由器、热点、库版本之后都没有解决，最后通过降低 WiFi 发射功率恢复稳定。 如果使用的是体积很小的 ESP32-C3 开发板，尤其是带板载 PCB 天线的 Super Mini 这类板子，遇到类似问题可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法">
+<meta property="og:url" content="https://zoeget.github.io/ZoeWu/posts/2026/07/21/164218.html">
+<meta property="og:site_name" content="御坂小屋">
+<meta property="og:description" content="前言本文记录一个 ESP-C3 Super Mini 开发板连接 WiFi 失败的问题。 问题现象比较迷惑：开发板可以扫描到附近的 WiFi，但是连接时一直失败，偶尔能连上也会很快断开。常规排查路由器、热点、库版本之后都没有解决，最后通过降低 WiFi 发射功率恢复稳定。 如果使用的是体积很小的 ESP32-C3 开发板，尤其是带板载 PCB 天线的 Super Mini 这类板子，遇到类似问题可">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png">
+<meta property="article:published_time" content="2026-07-21T08:42:18.000Z">
+<meta property="article:modified_time" content="2026-07-21T10:26:43.135Z">
+<meta property="article:author" content="Zoe Wu">
+<meta property="article:tag" content="报错解决">
+<meta property="article:tag" content="ESP32-C3">
+<meta property="article:tag" content="ESP-C3 Super Mini">
+<meta property="article:tag" content="WiFi">
+<meta property="article:tag" content="Arduino">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zoeget.github.io/ZoeWu/img/favicon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法",
+  "url": "https://zoeget.github.io/ZoeWu/posts/2026/07/21/164218.html",
+  "image": "https://zoeget.github.io/ZoeWu/img/favicon.png",
+  "datePublished": "2026-07-21T08:42:18.000Z",
+  "dateModified": "2026-07-21T10:26:43.135Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Zoe Wu",
+      "url": "https://zoeget.github.io/ZoeWu"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/ZoeWu/img/favicon.png"><link rel="canonical" href="https://zoeget.github.io/ZoeWu/posts/2026/07/21/164218.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/ZoeWu/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/ZoeWu/',
+  algolia: undefined,
+  localSearch: {"path":"/ZoeWu/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">29</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">35</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/ZoeWu/"><span class="site-name">御坂小屋</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/ZoeWu/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/ZoeWu/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-07-21T08:42:18.000Z" title="Created 2026-07-21 16:42:18">2026-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-07-21T10:26:43.135Z" title="Updated 2026-07-21 18:26:43">2026-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/ZoeWu/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文记录一个 <code>ESP-C3 Super Mini</code> 开发板连接 WiFi 失败的问题。</p>
+<p>问题现象比较迷惑：开发板可以扫描到附近的 WiFi，但是连接时一直失败，偶尔能连上也会很快断开。常规排查路由器、热点、库版本之后都没有解决，最后通过降低 WiFi 发射功率恢复稳定。</p>
+<p>如果使用的是体积很小的 <code>ESP32-C3</code> 开发板，尤其是带板载 PCB 天线的 <code>Super Mini</code> 这类板子，遇到类似问题可以优先试一下这个方法。</p>
+<h2 id="一、问题现象"><a href="#一、问题现象" class="headerlink" title="一、问题现象"></a>一、问题现象</h2><p>开发板上电后，WiFi 扫描功能是正常的，可以看到周围的无线热点。</p>
+<p>但是真正连接 WiFi 时会出现下面几种情况：</p>
+<ul>
+<li>能扫描到 SSID，但是连接失败；</li>
+<li>连接过程中返回状态码 <code>6</code>；</li>
+<li>偶尔可以连接成功，但是几秒后又自动断开；</li>
+<li>换路由器或手机热点后，表现仍然不稳定。</li>
+</ul>
+<p>也就是说，问题不是完全没有 WiFi 信号，而是“能看到，但是连不上或者连不稳”。</p>
+<h2 id="二、尝试过的排查方向"><a href="#二、尝试过的排查方向" class="headerlink" title="二、尝试过的排查方向"></a>二、尝试过的排查方向</h2><p>一开始容易怀疑是软件或路由器配置问题，所以可以先检查下面几项：</p>
+<ul>
+<li>更新 <code>ESP-IDF</code> 或 Arduino ESP32 开发包；</li>
+<li>确认 WiFi 名称和密码没有写错；</li>
+<li>关闭路由器的 <code>5GHz</code>，只保留 <code>2.4GHz</code>；</li>
+<li>修改路由器加密方式，例如使用 <code>WPA2</code>；</li>
+<li>换成手机热点测试；</li>
+<li>缩短开发板与路由器之间的距离。</li>
+</ul>
+<p>如果这些方法都没有效果，就需要考虑硬件射频部分的影响。</p>
+<h2 id="三、最终解决方法"><a href="#三、最终解决方法" class="headerlink" title="三、最终解决方法"></a>三、最终解决方法</h2><p>解决方法是在初始化 WiFi 之前，降低 ESP32-C3 的最大 WiFi 发射功率。</p>
+<p>示例代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;esp_wifi.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在初始化 WiFi 之前调用</span></span><br><span class="line"><span class="type">const</span> <span class="type">wifi_power_t</span> wifiOutputPower = WIFI_POWER_8_5dBm;</span><br><span class="line"><span class="built_in">esp_wifi_set_max_tx_power</span>(wifiOutputPower);</span><br></pre></td></tr></table></figure>
+
+<p>把 WiFi 发射功率降低到 <code>8.5dBm</code> 后，连接变得稳定，不再出现频繁断开的问题。</p>
+<h2 id="四、调用位置"><a href="#四、调用位置" class="headerlink" title="四、调用位置"></a>四、调用位置</h2><p>需要注意的是，<code>esp_wifi_set_max_tx_power()</code> 建议放在 WiFi 初始化之前调用。</p>
+<p>Arduino 环境中可以放在 <code>WiFi.begin()</code> 之前，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;WiFi.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;esp_wifi.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span> *ssid = <span class="string">&quot;Your WiFi Name&quot;</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">char</span> *password = <span class="string">&quot;Your WiFi Password&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Serial.<span class="built_in">begin</span>(<span class="number">115200</span>);</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> <span class="type">wifi_power_t</span> wifiOutputPower = WIFI_POWER_8_5dBm;</span><br><span class="line">  <span class="built_in">esp_wifi_set_max_tx_power</span>(wifiOutputPower);</span><br><span class="line"></span><br><span class="line">  WiFi.<span class="built_in">begin</span>(ssid, password);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (WiFi.<span class="built_in">status</span>() != WL_CONNECTED) &#123;</span><br><span class="line">    <span class="built_in">delay</span>(<span class="number">500</span>);</span><br><span class="line">    Serial.<span class="built_in">print</span>(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Serial.<span class="built_in">println</span>(<span class="string">&quot;WiFi connected&quot;</span>);</span><br><span class="line">  Serial.<span class="built_in">println</span>(WiFi.<span class="built_in">localIP</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用 <code>ESP-IDF</code>，同样要把功率设置放在实际发起连接之前。</p>
+<h2 id="五、原因分析"><a href="#五、原因分析" class="headerlink" title="五、原因分析"></a>五、原因分析</h2><p><code>ESP-C3 Super Mini</code> 这类开发板体积很小，板载天线和射频前端空间有限。</p>
+<p>在某些板子上，默认较高的 WiFi 发射功率不一定带来更好的连接效果，反而可能导致：</p>
+<ul>
+<li>PCB 天线匹配不好；</li>
+<li>射频前端在高功率下失真；</li>
+<li>信号反射变大；</li>
+<li>握手阶段数据质量变差；</li>
+<li>路由器能看到设备请求，但连接过程不稳定。</li>
+</ul>
+<p>所以这个问题看起来像软件配置错误，实际可能是硬件射频表现导致的连接失败。</p>
+<p>降低发射功率后，信号强度虽然变小，但信号质量可能更稳定，因此 WiFi 握手和后续通信反而正常。</p>
+<h2 id="六、排查建议"><a href="#六、排查建议" class="headerlink" title="六、排查建议"></a>六、排查建议</h2><p>如果遇到 <code>ESP32-C3</code> 或 <code>ESP-C3 Super Mini</code> WiFi 连接失败，可以按下面顺序排查：</p>
+<ol>
+<li>确认开发板可以扫描到目标 WiFi；</li>
+<li>确认 WiFi 是 <code>2.4GHz</code>，不是只开了 <code>5GHz</code>；</li>
+<li>确认 SSID 和密码正确；</li>
+<li>尝试手机热点，排除路由器兼容问题；</li>
+<li>更新 Arduino ESP32 开发包或 ESP-IDF；</li>
+<li>在 WiFi 初始化前调用 <code>esp_wifi_set_max_tx_power()</code> 降低功率；</li>
+<li>如果仍然不稳定，再换开发板或检查天线、供电和焊接质量。</li>
+</ol>
+<p>不要只看“信号强度”判断问题。</p>
+<p>对小尺寸开发板来说，信号强不一定代表连接质量好，射频设计、供电和天线匹配都会影响实际连接稳定性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次问题的核心现象是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ESP-C3 Super Mini 能扫描到 WiFi，但是连接失败或频繁断开</span><br></pre></td></tr></table></figure>
+
+<p>有效解决方法是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;esp_wifi.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">wifi_power_t</span> wifiOutputPower = WIFI_POWER_8_5dBm;</span><br><span class="line"><span class="built_in">esp_wifi_set_max_tx_power</span>(wifiOutputPower);</span><br></pre></td></tr></table></figure>
+
+<p>把 WiFi 最大发射功率降低到 <code>8.5dBm</code> 后，连接稳定性明显改善。</p>
+<p>后续如果再遇到类似问题，排查软件配置的同时，也要考虑小尺寸开发板的 PCB 天线和射频前端问题。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1720988">ESP C3 Super Mini 踩坑记：WiFi 能搜到却连不上？降低功率试试</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu">Zoe Wu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://zoeget.github.io/ZoeWu/posts/2026/07/21/164218.html">https://zoeget.github.io/ZoeWu/posts/2026/07/21/164218.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/ZoeWu/tags/%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/">报错解决</a><a class="post-meta__tags" href="/ZoeWu/tags/ESP32-C3/">ESP32-C3</a><a class="post-meta__tags" href="/ZoeWu/tags/ESP-C3-Super-Mini/">ESP-C3 Super Mini</a><a class="post-meta__tags" href="/ZoeWu/tags/WiFi/">WiFi</a><a class="post-meta__tags" href="/ZoeWu/tags/Arduino/">Arduino</a></div><div class="post-share"><div class="social-share" data-image="/ZoeWu/img/favicon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/ZoeWu/posts/2026/07/21/122939.html" title="中移物联ML307C 4G模块介绍和使用笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">中移物联ML307C 4G模块介绍和使用笔记</div></div><div class="info-2"><div class="info-item-1">前言本文记录中移物联 ML307C 4G Cat.1 模块的基础信息和常见使用流程。 主要内容包括：  ML307C 模块的基本介绍； 串口波特率和 AT 指令使用注意事项； SIM 卡和驻网检查流程； TCP、UDP、MQTT 的基础测试命令； 使用过程中的一些注意点。  这类 4G 模块最常见的使用方式就是通过串口发送 AT 指令，让模块完成联网、建链、收发数据等操作。 一、ML307C 模块简介ML307C 是中移物联推出的一款小尺寸国产化 Cat.1 无线通信模组，面向物联网应用场景。 它采用翱捷科技 ASR1605 芯片平台，特点是：  体积较小； 集成度较高； 功耗相对较低； 支持多种物联网通信场景； 使用常见的 LCC + LGA 封装。  常见应用场景包括：  金融支付； 定位追踪； 电动两轮车； 视频监控； 物联网终端设备。  ML307C 模块共有 109 个引脚，其中：    引脚类型 数量    LCC 引脚 48 个   LGA 引脚 61 个   模块尺寸约为： 117.7mm x 15.8mm x 2.2mm  常见子型号有：  ML307C-DC-...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/ZoeWu/posts/2026/07/13/134152.html" title="Codex文件打开目标从Cursor切换到VS Code修复记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-13</div><div class="info-item-2">Codex文件打开目标从Cursor切换到VS Code修复记录</div></div><div class="info-2"><div class="info-item-1">问题背景在 ChatGPT Desktop（Codex）中打开： 1设置 → 常规 → 默认文件打开目标  下拉列表中只有以下选项：  Cursor Default app File Explorer  列表中没有 Visual Studio Code，因此无法直接把 VS Code 选择为默认文件打开目标。 与此同时，在 Windows 命令行中执行： 1code --version  输出结果为： 13.2.11  这个版本号并不是当前安装的 Visual Studio Code 版本，说明系统中的 code 命令实际调用的是 Cursor。 排查 code 命令来源在 CMD 中执行下面的命令，检查 Windows 当前能够找到哪些 code 命令： 1where code  输出结果如下： 1234d:\Cursor\cursor\resources\app\codeBin\coded:\Cursor\cursor\resources\app\codeBin\code.cmdD:\VisualStudioCode\Microsoft VS Code\bin\codeD:\...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2026/07/13/125329.html" title="Git提交报错Author identity unknown解决办法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-13</div><div class="info-item-2">Git提交报错Author identity unknown解决办法</div></div><div class="info-2"><div class="info-item-1">问题现象在使用 Git 提交代码到 GitHub 仓库时，如果本机还没有配置 Git 提交者身份信息，执行 git commit 可能会出现下面的报错： 1234567891011Author identity unknown*** Please tell me who you are.Run  git config --global user.email &quot;you@example.com&quot;  git config --global user.name &quot;Your Name&quot;to set your account&#x27;s default identity.Omit --global to set the identity only in this repository.  这个报错的意思是：Git 不知道本次提交应该使用哪个用户名和邮箱作为提交者信息，所以拒绝继续创建提交记录。 解决办法使用 GitHub 账号时，只需要把 user.name 和 user.email 配置成自己的 GitHub 用户名和邮箱即可。 执行下面两条命令：...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2026/07/13/130533.html" title="Hexo部署报错detected dubious ownership解决办法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-13</div><div class="info-item-2">Hexo部署报错detected dubious ownership解决办法</div></div><div class="info-2"><div class="info-item-1">问题现象在执行 Hexo 部署命令时，可能会遇到下面的 Git 报错： 1fatal: detected dubious ownership in repository  这个报错通常会导致 hexo d 部署失败，无法正常把生成后的静态文件推送到远程仓库。 问题原因Git 在执行 Hexo 部署时，检测到 .deploy_git 仓库的所有者，也就是 Owner，与当前登录的 Windows 用户不一致。 为了保证仓库安全，Git 默认会禁止当前用户继续操作该仓库，因此 Hexo 部署时会失败，并提示： 1fatal: detected dubious ownership in repository  这个问题与 Hexo 本身关系不大，主要是 Git 的安全检查机制导致的。 方法一：将仓库添加到 Git 安全目录推荐优先使用这个方法。 打开 CMD、PowerShell 或 Git Bash，执行下面的命令： 1git config --global --add safe.directory D:/Blog/ZoeWu/.deploy_git  这条命令的作用是把 Hexo ...</div></div></div></a><a class="pagination-related" href="/ZoeWu/posts/2026/07/21/112412.html" title="PlatformIO配置ESP32-S3-N16R8开发板记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-21</div><div class="info-item-2">PlatformIO配置ESP32-S3-N16R8开发板记录</div></div><div class="info-2"><div class="info-item-1">一、问题背景在 PlatformIO 中使用 ESP32-S3-N16R8 开发板时，可能会遇到一个问题：PlatformIO 自带的开发板列表里没有完全对应的板型。 ESP32-S3-N16R8 的常见规格是：  Flash：16MB； PSRAM：8MB； 芯片：ESP32-S3； 框架：Arduino。  如果直接随便选择一个 ESP32-S3 板型，可能会出现下面几类问题：  PSRAM 无法正确识别； 8MB PSRAM 没有被启用； Flash 容量识别不正确； 程序可以编译，但下载后无法正常运行； Arduino IDE 中能正常使用，但 PlatformIO 中配置不对。  核心原因是：PlatformIO 的板型配置会影响 Flash、PSRAM、分区表和启动参数。如果选用的板型和实际硬件不一致，就容易出现运行异常。 二、简单解决办法可以先把开发板模型设置为： 1board = esp32-s3-devkitc-1  然后在 platformio.ini 中补充 Flash、PSRAM 和分区表相关配置。 示例配置如下： 12345678910111213141...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/ZoeWu/img/favicon.png" onerror="this.onerror=null;this.src='/ZoeWu/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Zoe Wu</div><div class="author-info-description"></div><div class="site-data"><a href="/ZoeWu/archives/"><div class="headline">Articles</div><div class="length-num">29</div></a><a href="/ZoeWu/tags/"><div class="headline">Tags</div><div class="length-num">35</div></a><a href="/ZoeWu/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZoeGet"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Hello,This is my Blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%E7%8E%B0%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">一、问题现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B0%9D%E8%AF%95%E8%BF%87%E7%9A%84%E6%8E%92%E6%9F%A5%E6%96%B9%E5%90%91"><span class="toc-number">3.</span> <span class="toc-text">二、尝试过的排查方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">三、最终解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%B0%83%E7%94%A8%E4%BD%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">四、调用位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-number">6.</span> <span class="toc-text">五、原因分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8E%92%E6%9F%A5%E5%BB%BA%E8%AE%AE"><span class="toc-number">7.</span> <span class="toc-text">六、排查建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/21/164218.html" title="ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法">ESP-C3 Super Mini WiFi连接失败降低发射功率解决办法</a><time datetime="2026-07-21T08:42:18.000Z" title="Created 2026-07-21 16:42:18">2026-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/21/122939.html" title="中移物联ML307C 4G模块介绍和使用笔记">中移物联ML307C 4G模块介绍和使用笔记</a><time datetime="2026-07-21T04:29:39.000Z" title="Created 2026-07-21 12:29:39">2026-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/21/115438.html" title="Git和GitHub从初始化到提交推送完整流程">Git和GitHub从初始化到提交推送完整流程</a><time datetime="2026-07-21T03:54:38.000Z" title="Created 2026-07-21 11:54:38">2026-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/21/112412.html" title="PlatformIO配置ESP32-S3-N16R8开发板记录">PlatformIO配置ESP32-S3-N16R8开发板记录</a><time datetime="2026-07-21T03:24:12.000Z" title="Created 2026-07-21 11:24:12">2026-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ZoeWu/posts/2026/07/15/000000.html" title="Git远程仓库remote命令使用笔记">Git远程仓库remote命令使用笔记</a><time datetime="2026-07-14T16:00:00.000Z" title="Created 2026-07-15 00:00:00">2026-07-15</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Zoe Wu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div><div class="footer_custom_text">滋滋滋滋滋滋滋滋滋滋</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/ZoeWu/js/utils.js?v=5.5.1"></script><script src="/ZoeWu/js/main.js?v=5.5.1"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/ZoeWu/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
