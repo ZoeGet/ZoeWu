@@ -121,19 +121,23 @@ a:hover {
 }
 
 #aside-content .card-info {
-  /* Reduce the empty vertical space around the avatar in the author card. */
-  padding-top: 8px !important;
-  padding-bottom: 10px !important;
+  padding-top: 0 !important;
 }
 
 #aside-content .card-info .avatar-img {
-  margin-top: -2px;
-  margin-bottom: -2px;
+  background: transparent;
+  box-shadow: none;
+  margin-bottom: -8px;
 }
 
 #aside-content .avatar-img img {
-  border: 2px solid var(--zw-line);
-  box-shadow: 0 0 0 5px var(--zw-accent-soft);
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  max-width: none;
+  margin: -2px;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Keep the avatar still on hover. */
