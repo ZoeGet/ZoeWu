@@ -354,6 +354,29 @@ a:hover {
   color: #397da5 !important;
 }
 
+/* Keep the footer in three clear rows: copyright, custom text, then framework info. */
+#footer .footer-other {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer .footer-copyright {
+  display: contents;
+}
+
+#footer .footer-copyright .copyright {
+  order: 1;
+}
+
+#footer .footer_custom_text {
+  order: 2;
+}
+
+#footer .footer-copyright .framework-info {
+  order: 3;
+}
+
 /* Tags stay compact by default and unfold when the visitor points at them. */
 #aside-content .card-tags .card-tag-cloud {
   position: relative;
@@ -467,17 +490,13 @@ a:hover {
 /* Homepage titles signal hover with weight, not a color change. */
 #recent-posts .recent-post-item > .recent-post-info > .article-title {
   font-weight: 400;
-  -webkit-text-stroke-width: 0;
-  -webkit-text-stroke-color: transparent;
-  will-change: -webkit-text-stroke-width;
-  transition: color 0.2s ease-in-out, -webkit-text-stroke-width 0.22s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition: color 0.2s ease-in-out, font-weight 0.2s ease-in-out !important;
 }
 
 #recent-posts .recent-post-item > .recent-post-info > .article-title:hover {
-  color: var(--text-highlight-color) !important;
-  font-weight: 400;
-  -webkit-text-stroke-width: 0.45px;
-  -webkit-text-stroke-color: currentColor;
+  color: inherit !important;
+  font-weight: 600;
+  -webkit-text-stroke: 0;
 }
 
 #pagination .page-number.current,
