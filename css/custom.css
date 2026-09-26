@@ -487,18 +487,15 @@ a:hover {
   color: #5598b9;
 }
 
-/* Homepage titles signal hover with weight, not a color change. */
+/* Homepage titles keep their original weight and use a soft sky-blue hover. */
 #recent-posts .recent-post-item > .recent-post-info > .article-title {
   font-weight: 400;
-  /* Font weight is discrete for the current font; animating it steps through
-     intermediate weights and looks like several consecutive jumps. */
-  transition: none !important;
+  transition: color 0.2s ease-in-out !important;
 }
 
 #recent-posts .recent-post-item > .recent-post-info > .article-title:hover {
-  color: inherit !important;
-  font-weight: 600;
-  -webkit-text-stroke: 0;
+  color: var(--zw-accent) !important;
+  font-weight: 400;
 }
 
 #pagination .page-number.current,
