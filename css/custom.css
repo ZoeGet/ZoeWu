@@ -490,7 +490,9 @@ a:hover {
 /* Homepage titles signal hover with weight, not a color change. */
 #recent-posts .recent-post-item > .recent-post-info > .article-title {
   font-weight: 400;
-  transition: color 0.2s ease-in-out, font-weight 0.2s ease-in-out !important;
+  /* Font weight is discrete for the current font; animating it steps through
+     intermediate weights and looks like several consecutive jumps. */
+  transition: none !important;
 }
 
 #recent-posts .recent-post-item > .recent-post-info > .article-title:hover {
