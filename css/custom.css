@@ -441,6 +441,116 @@ a:hover {
   color: #4f91b1 !important;
 }
 
+/* Tags page: keep the original colourful character, but soften every colour. */
+.tag-cloud-list:hover a:not(:hover) {
+  /* The theme dims every other tag when the cloud is hovered; keep the cloud steady. */
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.tag-cloud-list > a {
+  --zw-tag-ink: #47788f;
+  --zw-tag-bg: #ebf6fb;
+  --zw-tag-hover-bg: #dceff8;
+  color: var(--zw-tag-ink) !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--zw-tag-bg) !important;
+  box-shadow: 0 2px 7px rgba(72, 100, 118, 0.07) !important;
+  text-shadow: none !important;
+  filter: none !important;
+  font-size: 1em !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  text-rendering: auto;
+  transform: none !important;
+  will-change: auto !important;
+  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.tag-cloud-list > a::before {
+  display: none !important;
+}
+
+.tag-cloud-list > a:nth-child(12n + 1) {
+  --zw-tag-ink: #9b5c59;
+  --zw-tag-bg: #fbeeed;
+  --zw-tag-hover-bg: #f6dedb;
+}
+
+.tag-cloud-list > a:nth-child(12n + 2) {
+  --zw-tag-ink: #966a45;
+  --zw-tag-bg: #fbf2e9;
+  --zw-tag-hover-bg: #f6e5d5;
+}
+
+.tag-cloud-list > a:nth-child(12n + 3) {
+  --zw-tag-ink: #7d7444;
+  --zw-tag-bg: #f8f5e8;
+  --zw-tag-hover-bg: #f0ebd2;
+}
+
+.tag-cloud-list > a:nth-child(12n + 4) {
+  --zw-tag-ink: #4f7d61;
+  --zw-tag-bg: #edf7f0;
+  --zw-tag-hover-bg: #dceee2;
+}
+
+.tag-cloud-list > a:nth-child(12n + 5) {
+  --zw-tag-ink: #467a78;
+  --zw-tag-bg: #ebf7f6;
+  --zw-tag-hover-bg: #d8eeec;
+}
+
+.tag-cloud-list > a:nth-child(12n + 6) {
+  --zw-tag-ink: #47788f;
+  --zw-tag-bg: #ebf6fb;
+  --zw-tag-hover-bg: #dceff8;
+}
+
+.tag-cloud-list > a:nth-child(12n + 7) {
+  --zw-tag-ink: #536f9a;
+  --zw-tag-bg: #eef3fb;
+  --zw-tag-hover-bg: #dfe8f7;
+}
+
+.tag-cloud-list > a:nth-child(12n + 8) {
+  --zw-tag-ink: #626597;
+  --zw-tag-bg: #f0f1fb;
+  --zw-tag-hover-bg: #e2e3f7;
+}
+
+.tag-cloud-list > a:nth-child(12n + 9) {
+  --zw-tag-ink: #785f91;
+  --zw-tag-bg: #f4eff9;
+  --zw-tag-hover-bg: #e9def3;
+}
+
+.tag-cloud-list > a:nth-child(12n + 10) {
+  --zw-tag-ink: #8d5f83;
+  --zw-tag-bg: #faeff7;
+  --zw-tag-hover-bg: #f3deec;
+}
+
+.tag-cloud-list > a:nth-child(12n + 11) {
+  --zw-tag-ink: #955f70;
+  --zw-tag-bg: #fbeef2;
+  --zw-tag-hover-bg: #f5dde5;
+}
+
+.tag-cloud-list > a:nth-child(12n) {
+  --zw-tag-ink: #65747d;
+  --zw-tag-bg: #f1f4f5;
+  --zw-tag-hover-bg: #e3e9eb;
+}
+
+.tag-cloud-list > a:hover {
+  color: var(--zw-tag-ink) !important;
+  background: var(--zw-tag-hover-bg) !important;
+  box-shadow: 0 5px 12px rgba(72, 100, 118, 0.12) !important;
+  transform: none !important;
+}
+
 /* Archive timeline: soft blue line, gently alternating dots, black All Articles anchor. */
 #archive .article-sort,
 #archive .article-sort-title::after {
@@ -674,6 +784,19 @@ html[data-theme='dark'] #aside-content .card-tags .card-tag-cloud::after {
 html[data-theme='dark'] #aside-content .card-archives .card-archive-list-item a:hover {
   background-color: rgba(104, 181, 229, 0.14) !important;
   color: #b9e4fa !important;
+}
+
+html[data-theme='dark'] .tag-cloud-list > a {
+  color: color-mix(in srgb, var(--zw-tag-ink) 42%, white) !important;
+  background: color-mix(in srgb, var(--zw-tag-ink) 22%, transparent) !important;
+  filter: none !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16) !important;
+}
+
+html[data-theme='dark'] .tag-cloud-list > a:hover {
+  color: color-mix(in srgb, var(--zw-tag-ink) 30%, white) !important;
+  background: color-mix(in srgb, var(--zw-tag-ink) 32%, transparent) !important;
+  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.24) !important;
 }
 
 html[data-theme='dark'] #recent-posts .recent-post-item,
