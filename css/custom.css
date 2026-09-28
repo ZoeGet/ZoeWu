@@ -104,6 +104,7 @@ a:hover {
 }
 
 #recent-posts .recent-post-item {
+  margin-bottom: 16px;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
@@ -654,14 +655,30 @@ html:not([data-theme='dark']) #archive {
 }
 
 /* Homepage titles keep their original weight and use a soft sky-blue hover. */
+#recent-posts .recent-post-item > .recent-post-info.no-cover {
+  padding: 24px 28px !important;
+}
+
 #recent-posts .recent-post-item > .recent-post-info > .article-title {
+  font-size: 1.32em !important;
   font-weight: 500;
+  line-height: 1.4;
   transition: color 0.2s ease-in-out !important;
 }
 
 #recent-posts .recent-post-item > .recent-post-info > .article-title:hover {
   color: var(--zw-accent) !important;
   font-weight: 500;
+}
+
+#recent-posts .recent-post-item > .recent-post-info > .article-meta-wrap {
+  margin: 5px 0;
+  font-size: 0.84em;
+}
+
+#recent-posts .recent-post-item > .recent-post-info > .content {
+  font-size: 0.95em;
+  line-height: 1.7;
 }
 
 #post .post-content {
