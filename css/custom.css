@@ -456,7 +456,7 @@ a:hover {
   color: #4f91b1 !important;
 }
 
-/* Tags page: keep the original colourful character, but soften every colour. */
+/* Tags page: use a colorful text palette without tag backgrounds. */
 .tag-cloud-list:hover a:not(:hover) {
   /* The theme dims every other tag when the cloud is hovered; keep the cloud steady. */
   opacity: 1 !important;
@@ -464,23 +464,21 @@ a:hover {
 }
 
 .tag-cloud-list > a {
-  --zw-tag-ink: #47788f;
-  --zw-tag-bg: #ebf6fb;
-  --zw-tag-hover-bg: #dceff8;
-  color: var(--zw-tag-ink) !important;
   border: 0 !important;
-  border-radius: 8px !important;
-  background: var(--zw-tag-bg) !important;
-  box-shadow: 0 2px 7px rgba(72, 100, 118, 0.07) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   text-shadow: none !important;
   filter: none !important;
-  font-size: 1em !important;
+  margin: 3px 5px;
+  padding: 0 2px;
+  font-size: 0.95em !important;
   font-weight: 500 !important;
   line-height: 1.6 !important;
   text-rendering: auto;
   transform: none !important;
   will-change: auto !important;
-  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease !important;
+  transition: opacity 0.18s ease !important;
 }
 
 .tag-cloud-list > a::before {
@@ -488,118 +486,82 @@ a:hover {
 }
 
 .tag-cloud-list > a:nth-child(18n + 1) {
-  --zw-tag-ink: #9b5c59;
-  --zw-tag-bg: #fbeeed;
-  --zw-tag-hover-bg: #f6dedb;
+  color: #397b94 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 2) {
-  --zw-tag-ink: #966a45;
-  --zw-tag-bg: #fbf2e9;
-  --zw-tag-hover-bg: #f6e5d5;
+  color: #4d57a8 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 3) {
-  --zw-tag-ink: #7d7444;
-  --zw-tag-bg: #f8f5e8;
-  --zw-tag-hover-bg: #f0ebd2;
+  color: #c03f71 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 4) {
-  --zw-tag-ink: #4f7d61;
-  --zw-tag-bg: #edf7f0;
-  --zw-tag-hover-bg: #dceee2;
+  color: #8150b6 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 5) {
-  --zw-tag-ink: #467a78;
-  --zw-tag-bg: #ebf7f6;
-  --zw-tag-hover-bg: #d8eeec;
+  color: #788f29 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 6) {
-  --zw-tag-ink: #47788f;
-  --zw-tag-bg: #ebf6fb;
-  --zw-tag-hover-bg: #dceff8;
+  color: #3f72bf !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 7) {
-  --zw-tag-ink: #536f9a;
-  --zw-tag-bg: #eef3fb;
-  --zw-tag-hover-bg: #dfe8f7;
+  color: #35a64a !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 8) {
-  --zw-tag-ink: #626597;
-  --zw-tag-bg: #f0f1fb;
-  --zw-tag-hover-bg: #e2e3f7;
+  color: #7352bd !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 9) {
-  --zw-tag-ink: #785f91;
-  --zw-tag-bg: #f4eff9;
-  --zw-tag-hover-bg: #e9def3;
+  color: #d14c58 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 10) {
-  --zw-tag-ink: #8d5f83;
-  --zw-tag-bg: #faeff7;
-  --zw-tag-hover-bg: #f3deec;
+  color: #586c7c !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 11) {
-  --zw-tag-ink: #955f70;
-  --zw-tag-bg: #fbeef2;
-  --zw-tag-hover-bg: #f5dde5;
+  color: #c16f20 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 12) {
-  --zw-tag-ink: #65747d;
-  --zw-tag-bg: #f1f4f5;
-  --zw-tag-hover-bg: #e3e9eb;
+  color: #9f4f85 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 13) {
-  --zw-tag-ink: #a2604d;
-  --zw-tag-bg: #fcefe9;
-  --zw-tag-hover-bg: #f7dfd4;
+  color: #367b84 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 14) {
-  --zw-tag-ink: #8c6a37;
-  --zw-tag-bg: #fbf3df;
-  --zw-tag-hover-bg: #f3e6c3;
+  color: #c44242 !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 15) {
-  --zw-tag-ink: #637a45;
-  --zw-tag-bg: #f2f7e9;
-  --zw-tag-hover-bg: #e4eed3;
+  color: #61814a !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 16) {
-  --zw-tag-ink: #3f7e86;
-  --zw-tag-bg: #e8f7f8;
-  --zw-tag-hover-bg: #d4edef;
+  color: #b043ac !important;
 }
 
 .tag-cloud-list > a:nth-child(18n + 17) {
-  --zw-tag-ink: #526da5;
-  --zw-tag-bg: #edf1fb;
-  --zw-tag-hover-bg: #dce4f7;
+  color: #947f3d !important;
 }
 
 .tag-cloud-list > a:nth-child(18n) {
-  --zw-tag-ink: #835d88;
-  --zw-tag-bg: #f6eef7;
-  --zw-tag-hover-bg: #ebdced;
+  color: #568895 !important;
 }
 
 .tag-cloud-list > a:hover {
-  color: var(--zw-tag-ink) !important;
-  background: var(--zw-tag-hover-bg) !important;
-  box-shadow: 0 5px 12px rgba(72, 100, 118, 0.12) !important;
+  background: transparent !important;
+  box-shadow: none !important;
   transform: none !important;
+  opacity: 0.72;
 }
 
 /* Archive timeline: soft blue line, gently alternating dots, black All Articles anchor. */
@@ -881,16 +843,14 @@ html[data-theme='dark'] #aside-content .card-archives .card-archive-list-item a:
 }
 
 html[data-theme='dark'] .tag-cloud-list > a {
-  color: color-mix(in srgb, var(--zw-tag-ink) 42%, white) !important;
-  background: color-mix(in srgb, var(--zw-tag-ink) 22%, transparent) !important;
-  filter: none !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: brightness(1.25) saturate(0.85) !important;
 }
 
 html[data-theme='dark'] .tag-cloud-list > a:hover {
-  color: color-mix(in srgb, var(--zw-tag-ink) 30%, white) !important;
-  background: color-mix(in srgb, var(--zw-tag-ink) 32%, transparent) !important;
-  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.24) !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 html[data-theme='dark'] #recent-posts .recent-post-item,
