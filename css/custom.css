@@ -140,13 +140,20 @@ a:hover {
 }
 
 #aside-content .card-info .avatar-img {
-  margin-top: -2px;
+  width: 88px;
+  height: 88px;
+  margin-top: 4px;
   margin-bottom: -2px;
 }
 
 #aside-content .avatar-img img {
-  border: 2px solid var(--zw-line);
-  box-shadow: 0 0 0 5px var(--zw-accent-soft);
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  object-fit: cover;
 }
 
 /* Keep the avatar still on hover. */
